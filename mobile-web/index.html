@@ -1,0 +1,1069 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Sattva - Ayurvedic Wellness Guide</title>
+  <style>
+    :root {
+      --primary: #1b4d3e;
+      --primary-light: #2d6a4f;
+      --primary-bg: #e8f5e9;
+      --accent: #b07d62;
+      --accent-light: #d4a373;
+      --bg: #f8faf8;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --text-muted: #4b5563;
+      --border: #e5e7eb;
+      --border-light: #f3f4f6;
+      --radius: 14px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-top: var(--safe-top);
+      padding-bottom: calc(var(--safe-bottom) + 30px);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1b4d3e 0%, #2d6a4f 100%);
+      color: #ffffff;
+      padding: 24px 20px 20px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 8px 24px rgba(27, 77, 62, 0.18);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      font-size: 28px;
+      background: rgba(255, 255, 255, 0.18);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .server-status-btn {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4ade80;
+    }
+
+    .status-dot.offline {
+      background: #fbbf24;
+    }
+
+    /* Server banner */
+    .server-banner {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 14px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .server-banner.visible {
+      display: block;
+    }
+
+    .server-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .server-input-row input {
+      flex: 1;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 12px;
+      background: #ffffff;
+      color: #1f2937;
+    }
+
+    .server-input-row button {
+      background: #ffffff;
+      color: var(--primary);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    /* Hero search */
+    .search-box {
+      margin-top: 16px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border-radius: 14px;
+      border: none;
+      background: #ffffff;
+      color: #1f2937;
+      font-size: 15px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      outline: none;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    /* Container */
+    .container {
+      padding: 20px 16px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Daily Tip */
+    .tip-card {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 1px solid #fde68a;
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .tip-icon {
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .tip-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 2px;
+    }
+
+    .tip-desc {
+      font-size: 12px;
+      color: #78350f;
+      line-height: 1.4;
+    }
+
+    /* Section titles */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Modalities horizontal scroller */
+    .modalities-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modalities-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .modality-chip {
+      flex: 0 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s ease;
+    }
+
+    .modality-chip:active {
+      transform: scale(0.97);
+    }
+
+    .modality-chip-icon {
+      font-size: 18px;
+    }
+
+    .modality-chip-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1f2937;
+      white-space: nowrap;
+    }
+
+    /* Category pills */
+    .categories-wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 18px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .categories-wrap::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(27, 77, 62, 0.2);
+    }
+
+    /* Conditions list */
+    .conditions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .condition-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .condition-card:active {
+      transform: scale(0.99);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-icon {
+      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      background: var(--primary-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .card-cat {
+      font-size: 11px;
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fav-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #cbd5e1;
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .fav-btn.active {
+      color: #ef4444;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .herbs-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .herb-pill {
+      background: #f3f4f6;
+      color: #374151;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-light);
+      padding-top: 10px;
+      font-size: 12px;
+    }
+
+    .card-evidence {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .card-action {
+      color: var(--primary);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-container {
+      background: #ffffff;
+      width: 100%;
+      max-height: 88vh;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 20px 20px calc(24px + var(--safe-bottom));
+      overflow-y: auto;
+      box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-drag-bar {
+      width: 40px;
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      margin: 0 auto 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .modal-title-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .modal-icon {
+      font-size: 32px;
+      width: 52px;
+      height: 52px;
+      background: var(--primary-bg);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      line-height: 1.2;
+    }
+
+    .modal-category-tag {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .modal-close-btn {
+      background: #f3f4f6;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4b5563;
+    }
+
+    .modal-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+      gap: 16px;
+      overflow-x: auto;
+    }
+
+    .modal-tab-btn {
+      background: none;
+      border: none;
+      padding: 8px 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .modal-tab-btn.active {
+      color: var(--primary);
+    }
+
+    .modal-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+
+    .modal-tab-content {
+      display: none;
+    }
+
+    .modal-tab-content.active {
+      display: block;
+    }
+
+    .item-card {
+      background: #f9fafb;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .item-header {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .item-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .item-prep {
+      font-size: 12px;
+      color: #1b4d3e;
+      background: rgba(27, 77, 62, 0.08);
+      padding: 6px 10px;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+
+    .item-safety {
+      font-size: 11px;
+      color: #b45309;
+      background: #fef3c7;
+      padding: 6px 10px;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
+
+    .disclaimer-card {
+      background: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 18px;
+      font-size: 11px;
+      color: #991b1b;
+      line-height: 1.4;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    /* Modality Modal */
+    .modality-modal-header {
+      background: linear-gradient(135deg, #1b4d3e 0%, #2d6a4f 100%);
+      color: #ffffff;
+      padding: 20px;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    .modality-modal-tagline {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px 20px;
+      font-size: 11px;
+      color: #9ca3af;
+      border-top: 1px solid var(--border-light);
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-icon">🌿</div>
+        <div>
+          <div class="brand-title">Sattva</div>
+          <div class="brand-subtitle">Ayurvedic & Natural Wellness Guide</div>
+        </div>
+      </div>
+      <button class="server-status-btn" id="serverToggleBtn" onclick="toggleServerBanner()">
+        <span class="status-dot" id="serverStatusDot"></span>
+        <span id="serverStatusText">Online</span>
+      </button>
+    </div>
+
+    <!-- Server connection manager -->
+    <div class="server-banner" id="serverBanner">
+      <div style="font-weight: 600; margin-bottom: 4px;">⚡ Dev Server Live Sync</div>
+      <div>Running on Android Studio? Connect to the live dev server with full AI Wellness features:</div>
+      <div class="server-input-row">
+        <input type="text" id="serverUrlInput" value="http://10.0.2.2:3000" placeholder="http://10.0.2.2:3000" />
+        <button onclick="connectLiveServer()">Connect</button>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="Search 49 conditions, herbs, yoga..." oninput="filterConditions()" />
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Daily tip banner -->
+    <div class="tip-card">
+      <div class="tip-icon">✨</div>
+      <div>
+        <div class="tip-title">Ayurvedic Daily Wisdom</div>
+        <div class="tip-desc">Begin your morning with warm water and a slice of lemon to gently awaken Agni (digestive fire) and support natural detoxification.</div>
+      </div>
+    </div>
+
+    <!-- Modalities Explorer -->
+    <div class="section-header">
+      <div class="section-title">🌿 Healing Modalities</div>
+      <div class="section-subtitle">16 Traditions</div>
+    </div>
+    <div class="modalities-scroll" id="modalitiesList"></div>
+
+    <!-- Condition Categories -->
+    <div class="section-header">
+      <div class="section-title">📚 Condition Library</div>
+      <div class="section-subtitle" id="conditionCount">49 Conditions</div>
+    </div>
+
+    <div class="categories-wrap" id="categoryPills">
+      <button class="cat-btn active" onclick="selectCategory('All')">All</button>
+      <button class="cat-btn" onclick="selectCategory('Digestive')">Digestive</button>
+      <button class="cat-btn" onclick="selectCategory('Respiratory')">Respiratory</button>
+      <button class="cat-btn" onclick="selectCategory('Lifestyle')">Metabolic</button>
+      <button class="cat-btn" onclick="selectCategory('Pain')">Joints & Pain</button>
+      <button class="cat-btn" onclick="selectCategory('Mental')">Mental Balance</button>
+      <button class="cat-btn" onclick="selectCategory('Skin')">Skin & Hair</button>
+      <button class="cat-btn" onclick="selectCategory('Women')">Women's Care</button>
+      <button class="cat-btn" onclick="selectCategory('Men')">Men's Care</button>
+      <button class="cat-btn" onclick="selectCategory('General')">General Vitality</button>
+      <button class="cat-btn" onclick="selectCategory('Favorites')">❤️ Saved</button>
+    </div>
+
+    <!-- Conditions Grid -->
+    <div class="conditions-grid" id="conditionsGrid"></div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-container" id="modalContainer">
+      <div class="modal-drag-bar"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Educational wellness information only. Not intended to diagnose, treat, or replace professional medical care.</p>
+    <p style="margin-top: 4px;">Sattva Mobile • Powered by Capacitor & Android Studio</p>
+  </footer>
+
+  <script>
+    const conditionsData = [{"slug":"acidity-heartburn","name":"Acidity & Heartburn","category":"Digestive","icon":"flame","summary":"Burning discomfort or reflux after eating.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Yashtimadhu (Licorice)","use":"Soothes irritated mucous membranes of the esophagus and helps buffer excess gastric acid.","preparation":"Steep 1/2 tsp of licorice root powder in warm water 20 minutes before meals.","safety":"Avoid excessive or prolonged use if you have hypertension or kidney conditions."},{"name":"Coriander (Dhanyaka)","use":"Traditional cooling digestive herb that pacifies aggravated Pitta and burning sensations.","preparation":"Soak 1 tsp crushed seeds overnight in 1 cup room-temperature water; strain and drink in the morning.","safety":"Generally very safe in culinary and infusion amounts."},{"name":"Fennel (Saunf)","use":"Relaxes gastric sphincter spasms and neutralizes post-meal burning discomfort.","preparation":"Chew 1/2 tsp roasted fennel seeds after meals, or brew as a gentle tea.","safety":"Avoid concentrated essential oil extracts during early pregnancy."}],"herbalRemedyTips":["Coriander-Cumin cold infusion (Himam): Steep 1 tsp each of crushed coriander and cumin seeds in room-temperature water overnight; strain and drink in the morning to calm burning acid reflux.","Licorice (Yashtimadhu) pre-meal tea: Sip 1/2 cup of warm licorice root tea 20 minutes before meals to form a soothing protective layer over the esophageal lining.","Amla & Rock Sugar cooling sip: Mix 1/2 tsp pure organic Amla (Amalaki) powder with a pinch of crushed rock candy sugar (mishri) in lukewarm water to pacify Pitta acid surges."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"indigestion","name":"Indigestion","category":"Digestive","icon":"utensils","summary":"Fullness, discomfort, or unsettled digestion.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Fresh Ginger (Adrak)","use":"Ayurveda's universal digestive catalyst (Vishwabhesaja) that stimulates digestive fire (Agni).","preparation":"Chew a thin sliver of fresh ginger with a pinch of rock salt and lemon juice 10 minutes prior to meals.","safety":"Use cautiously if you have active gastric ulcers or bleeding disorders."},{"name":"Ajwain (Carom Seeds)","use":"Rapidly dispels heaviness, sluggish digestion, and post-meal fullness.","preparation":"Boil 1/2 tsp ajwain seeds in 2 cups of water for 5 minutes; strain and drink warm.","safety":"Heating nature; avoid excessive doses in high Pitta or severe reflux."},{"name":"Trikatu (Ginger, Black Pepper, Pippali)","use":"Traditional warming polyherbal blend that accelerates sluggish metabolic breakdown.","preparation":"Add a tiny pinch to warm soups or hot water before meals.","safety":"Avoid on an empty stomach if prone to heartburn or gastritis."}],"herbalRemedyTips":["Ginger & Rock Salt appetizer: Chew a thin sliver of fresh ginger sprinkled with pink rock salt and 2 drops of fresh lemon juice 10 minutes before meals to activate digestive enzymes.","Warm Ajwain & Hing infusion: Boil 1/2 tsp carom seeds with a tiny pinch of roasted asafoetida (hing) in warm water; sip after heavy meals to dissipate fullness.","Takra (Spiced Buttermilk): Whisk 2 tablespoons of fresh homemade yogurt into 1 cup of water with a pinch of roasted cumin and cilantro; drink with lunch to support digestive fire."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"constipation","name":"Constipation","category":"Digestive","icon":"sprout","summary":"Support for regular, comfortable bowel habits.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Triphala","use":"Renowned three-fruit blend (Haritaki, Bibhitaki, Amalaki) that tones bowel muscles and supports natural peristalsis.","preparation":"Mix 1/2 to 1 tsp of Triphala powder in warm water 45 minutes before sleep.","safety":"Do not use during acute diarrhea; consult your physician during pregnancy."},{"name":"Haritaki","use":"Classical bowel-regulating rasayana with downward motility action (Vatanulomana).","preparation":"Take 1/2 tsp with warm water or ghee at bedtime.","safety":"Avoid in severe dehydration, exhaustion, or during acute fasting."},{"name":"Psyllium Husk (Isabgol)","use":"Gentle bulk-forming soluble fiber that softens and expands stool volume.","preparation":"Stir 1-2 tsp rapidly into a full glass of warm water or milk; drink immediately followed by another glass of water.","safety":"Always consume with sufficient fluids to prevent intestinal blockage."}],"herbalRemedyTips":["Triphala bedtime draught: Mix 1/2 to 1 teaspoon of organic Triphala churna into a cup of warm water, let sit for 5 minutes, and drink before sleeping to encourage gentle morning regularity.","Warm Munakka (Black Raisin) decoction: Simmer 8-10 soaked black seeded raisins in a cup of water or milk; eat the softened fruit and drink the warm liquid before bed for natural bowel lubrication.","Castor Oil with warm tea: For stubborn sluggishness, add 1/2 to 1 teaspoon of pure cold-pressed castor oil into warm ginger tea before bed (use occasionally, not for prolonged periods)."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"gas-bloating","name":"Gas & Bloating","category":"Digestive","icon":"wind","summary":"Gentle approaches for occasional abdominal fullness.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Hing (Asafoetida)","use":"Potent carminative spice that breaks down trapped intestinal gas and settles abdominal spasms.","preparation":"Dissolve a tiny pinch in warm water or saute in ghee before adding to legumes.","safety":"Avoid large doses; discontinue if skin flushing occurs."},{"name":"Cumin (Jeera)","use":"Calms fermentation in the gut and prevents spasmodic gas accumulation.","preparation":"Simmer 1 tsp cumin seeds in warm water or chew roasted seeds post-meal.","safety":"Consult a doctor if taking blood sugar-lowering medications."},{"name":"Cardamom (Elaichi)","use":"Aromatic carminative that harmonizes digestion and relieves lower abdominal pressure.","preparation":"Crush 1-2 green pods into hot water or herbal teas.","safety":"Safe for general food use; monitor if you have gallstones."}],"herbalRemedyTips":["Classical CCF (Cumin-Coriander-Fennel) Tea: Simmer 1/2 tsp each of cumin, coriander, and fennel seeds in 3 cups of water for 5 minutes; strain and sip warm throughout the day.","Warm Hing-Ghee navel application: Warm a pinch of asafoetida (hing) in 1/2 tsp warm ghee or sesame oil and massage gently in a clockwise circle around the navel to release trapped gas.","Roasted Ajwain & Fennel chew: Keep equal parts dry-roasted ajwain and fennel seeds in a container; chew 1/2 tsp after meals to prevent post-meal bloating."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"diarrhea","name":"Diarrhea","category":"Digestive","icon":"droplets","summary":"Hydration-focused support for loose stools.","serious":true,"perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Kutaja (Holarrhena)","use":"Ayurveda's premier astringent herb to restore intestinal tone and reduce excessive fluid loss.","preparation":"Take 1/4 to 1/2 tsp Kutaja bark powder in warm water or buttermilk twice daily.","safety":"Use only short-term; seek immediate medical care if stools contain blood or high fever is present."},{"name":"Bilva (Bael Fruit)","use":"Rich in tannins and mucilage that bind loose stools and soothe irritated mucosal linings.","preparation":"Consume 1/2 tsp dried unripe bael powder with room-temperature water or diluted yogurt.","safety":"Do not use during chronic constipation."},{"name":"Nutmeg (Jaiphal)","use":"Aromatic spice with natural intestinal-stabilizing and antispasmodic qualities.","preparation":"Grate a tiny pinch (under 1/8 tsp) into warm water or fresh buttermilk.","safety":"Never exceed tiny culinary pinches; high amounts can cause dizziness."}],"herbalRemedyTips":["Bilva (Bael) & Buttermilk mix: Stir 1/2 tsp unripe bael fruit powder into a small cup of fresh buttermilk; sip twice daily to bind bowel movements and replenish gut electrolytes.","Roasted Cumin & Pomegranate elixir: Drink 1/2 cup fresh pomegranate juice sprinkled with freshly roasted cumin powder to cool intestinal heat and reduce fluid transit.","Nutmeg & Ginger rehydration water: Add a tiny grating of nutmeg and 1/4 tsp dry ginger powder into warm water with a pinch of rock salt and raw sugar for gentle natural hydration."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"irritable-bowel-syndrome","name":"Irritable Bowel Syndrome","category":"Digestive","icon":"activity","summary":"Lifestyle support alongside individualized medical care.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Bilva (Bael)","use":"Amphoteric bowel regulator that helps normalize both intermittent loose stools and spasmodic cramping.","preparation":"Drink a mild decoction of dried bael fruit between meals.","safety":"Consult a gastroenterologist for definitive diagnosis and ongoing care."},{"name":"Peppermint","use":"Relaxes visceral smooth muscles and decreases colon hypersensitivity.","preparation":"Steep peppermint leaves in hot water; enjoy lukewarm after meals.","safety":"May aggravate acid reflux in some individuals."},{"name":"Chamomile","use":"Calms the gut-brain axis, soothing enteric nervous system tension and digestive colic.","preparation":"Steep 1 tea bag in hot water for 7 minutes; sip in a quiet environment.","safety":"Avoid if allergic to ragweed or Asteraceae family plants."}],"herbalRemedyTips":["Fresh Takra (Medicinal Buttermilk) therapy: Whisk homemade yogurt with 4 parts water, roasted cumin, and curry leaves; drink with lunch to soothe enteric hyper-reactivity.","Warm Fennel & Peppermint infusion: Sip a mild warm tea made with crushed fennel seeds and peppermint leaves 30 minutes after meals to release intestinal cramping.","Castor oil pack on lower abdomen: Apply a warm cloth soaked in castor oil over the abdomen for 15 minutes before bed to ease chronic Vata-induced abdominal spasms."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"nausea","name":"Nausea","category":"Digestive","icon":"waves","summary":"Low-risk comfort measures for occasional nausea.","perspective":"Traditional Ayurveda may connect digestive discomfort with meal timing, food qualities, digestive capacity (agni), and individual constitution. These traditional ideas differ from modern medical explanations.","tryToday":["Sip water regularly","Eat slowly and mindfully","Choose smaller, regular meals","Take a gentle walk after eating","Practice five minutes of relaxed breathing"],"foods":["Simply cooked vegetables","Oats or rice","Banana when tolerated","Mild soups","Fennel or cumin in food"],"limit":["Very large meals","Personal trigger foods","Late-night eating","Excess alcohol","Frequent highly processed foods"],"practices":["Mindful eating","Gentle post-meal walking","Mild herbal tea","Consistent meal timing"],"therapies":["Ayurveda","Nutrition","Hydration","Breathing exercises","Mindfulness"],"safety":"Persistent digestive symptoms can have many causes. Supplements may interact with medicines and may be unsuitable during pregnancy or with liver or kidney conditions.","herbs":[{"name":"Fresh Ginger","use":"Potent anti-emetic herb that accelerates gastric emptying and dispels queasiness.","preparation":"Steep thin fresh slices in hot water; sip at room temperature.","safety":"Use moderation during pregnancy; consult your healthcare provider."},{"name":"Cardamom (Elaichi)","use":"Pleasant aromatic spice that soothes reversed stomach peristalsis (Chhardi).","preparation":"Crush 1-2 green cardamom pods and chew the seeds slowly or inhale the crushed aroma.","safety":"Generally safe for culinary and mild tea use."},{"name":"Lemon & Mint (Pudina)","use":"Refreshing herbs that stimulate salivary and gastric balance while clearing throat irritation.","preparation":"Steep fresh mint leaves in warm water with a slice of lemon.","safety":"Avoid if citrus triggers oral sensitivity or reflux."}],"herbalRemedyTips":["Fresh Ginger & Honey lick: Mix 1/2 tsp fresh ginger juice with 1/2 tsp raw honey; lick slowly in tiny drops from a spoon to rapidly quell queasiness.","Crushed Cardamom & Mint tea: Crush 2 cardamom pods and a sprig of fresh mint into boiling water; strain and sip slowly when cool to calm stomach unrest.","Roasted Cumin & Lemon water: Squeeze a wedge of fresh lemon into a cup of warm water with a pinch of roasted cumin; sip slowly to restore gastric directional flow."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"common-cold","name":"Common Cold","category":"Respiratory","icon":"cloud-sun","summary":"Rest and comfort during a typical viral cold.","perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Tulsi (Holy Basil)","use":"Antimicrobial and immunomodulating herb that dispels Kapha congestion and seasonal chills.","preparation":"Steep 5-7 fresh or dried leaves in hot water for 5 minutes.","safety":"May lower blood sugar; consult clinician during pregnancy."},{"name":"Black Pepper (Maricha)","use":"Pungent heating spice that breaks up sticky respiratory mucus and enhances bioavailability.","preparation":"Combine a pinch of freshly ground black pepper with honey or warm milk.","safety":"Avoid large doses if you have stomach ulcers."},{"name":"Ginger (Adrak)","use":"Warms the respiratory tract, promotes healthy sweating, and relieves chest tightness.","preparation":"Boil sliced fresh ginger root in water for 7 minutes.","safety":"Use caution with blood thinners."}],"herbalRemedyTips":["Ayush Tulsi-Ginger Kadha: Boil 6 Tulsi leaves, 1/2 inch crushed ginger, 2 crushed black peppercorns, and 1 cinnamon stick in 2 cups water until halved; drink warm with raw honey.","Turmeric-Eucalyptus herbal steam: Inhale steam from a pot of hot water infused with 1/2 tsp turmeric powder and 2 drops of eucalyptus oil for 5 minutes to clear nasal pathways.","Ginger-Tulsi honey paste: Blend equal parts fresh ginger juice and tulsi juice with raw honey; take 1/2 teaspoon 3 times daily to soothe throat tickle and clear phlegm."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"cough","name":"Cough","category":"Respiratory","icon":"wind","summary":"Soothing practices for an uncomplicated cough.","perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Vasaka (Adhatoda vasica)","use":"Ayurveda's premier respiratory herb; contains vasicine which liquefies thick sputum and relaxes bronchia.","preparation":"Steep 1/2 tsp dried Vasaka leaf powder in hot water or take with honey.","safety":"Seek medical attention if cough persists beyond 2 weeks or involves blood."},{"name":"Sitopaladi Churna","use":"Traditional polyherbal formulation (bambusa, pippali, cardamom, cinnamon) that soothes both dry hacking and productive coughs.","preparation":"Mix 1/2 tsp powder into 1 tsp pure honey and take twice daily.","safety":"Contains sugar; diabetic individuals should monitor carbohydrate intake."},{"name":"Yashtimadhu (Licorice)","use":"Demulcent herb that coats the pharynx and quiets coughing reflexes.","preparation":"Chew a small root sliver or brew a mild tea.","safety":"Avoid excessive intake with high blood pressure."}],"herbalRemedyTips":["Sitopaladi & Honey electuary: Mix 1/2 tsp Sitopaladi churna with raw honey into a smooth paste; lick slowly twice daily to calm throat reflex spasms and liquefy stubborn Kapha.","Warm Ghee & Roasted Turmeric: Gently warm 1/4 tsp pure turmeric powder in 1/2 tsp cow ghee; swallow slowly before sleep to lubricate vocal cords and halt nighttime dry cough.","Vasaka & Licorice decoction: Simmer 1/2 tsp Vasaka leaves and 1/4 tsp licorice root in water for 5 minutes; strain and drink warm to ease tight chest coughs."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"sore-throat","name":"Sore Throat","category":"Respiratory","icon":"mic","summary":"Gentle comfort for throat irritation.","perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Yashtimadhu (Licorice)","use":"Contains glycyrrhizin which provides anti-inflammatory demulcent relief to inflamed mucous membranes.","preparation":"Gargle with warm licorice decoction or slowly suck on a small root piece.","safety":"Monitor if taking diuretic medications."},{"name":"Turmeric (Haridra)","use":"Potent natural antimicrobial and anti-inflammatory agent for oral and pharyngeal tissues.","preparation":"Mix 1/2 tsp in warm water with salt for gargling.","safety":"Culinary amounts are safe; supplements require caution with gallstones."},{"name":"Clove (Lavanga)","use":"Contains eugenol, offering mild local numbing and antibacterial benefits.","preparation":"Hold 1 whole clove in the cheek, allowing its oils to bathe the throat.","safety":"Do not bite or ingest high quantities of clove oil."}],"herbalRemedyTips":["Warm Turmeric & Rock Salt gargle: Dissolve 1/2 tsp pure turmeric and 1/2 tsp pink Himalayan rock salt in 1 cup of comfortably warm water; gargle for 30 seconds, 3 times a day.","Licorice (Yashtimadhu) throat coat tea: Brew 1/2 tsp licorice root powder in 1 cup water for 5 minutes; sip slowly while warm to coat raw vocal cords.","Clove holding in mouth: Keep one whole organic clove resting between cheek and gum, allowing saliva to slowly release soothing eugenol across the throat."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"seasonal-allergies","name":"Seasonal Allergies","category":"Respiratory","icon":"flower","summary":"Daily habits for seasonal pollen exposure.","perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Guduchi (Giloy)","use":"Premier immunomodulator (Rasayana) that stabilizes hypersensitive immune reactions to airborne pollen.","preparation":"Drink 1/2 tsp Giloy powder steeped in warm water every morning.","safety":"May lower blood sugar; consult clinician if on immunosuppressants."},{"name":"Haridra (Turmeric)","use":"Curcumin suppresses histamine release and mast cell degranulation.","preparation":"Consume 1/2 tsp with warm milk/plant milk and black pepper.","safety":"Avoid high-dose supplements if taking blood thinners."},{"name":"Neem","use":"Cooling and detoxifying herb that clears toxic heat and skin/mucosal hypersensitivity.","preparation":"Take mild neem leaf tea or quality-controlled capsules under advice.","safety":"Do not use during pregnancy or while trying to conceive."}],"herbalRemedyTips":["Golden Turmeric-Black Pepper tonic: Whisk 1/2 tsp turmeric powder and a pinch of black pepper into warm milk or plant milk; drink daily to strengthen mucosal barrier defenses.","Pratimarsha Nasya (Herbal nasal oiling): Apply 2 drops of lukewarm Anu taila or cold-pressed sesame oil inside each nostril before going outdoors to trap pollen particles.","Morning Guduchi (Giloy) brew: Boil 1/2 tsp Guduchi stem powder in 1 cup water until reduced by half; drink warm on an empty stomach to regulate seasonal allergic reactivity."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"sinus-congestion","name":"Sinus Congestion","category":"Respiratory","icon":"cloud","summary":"Comfort measures for stuffiness and pressure.","perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Ajwain (Carom Seeds)","use":"Thymol-rich pungent seeds that clear blocked nasal passages and sinus pressure.","preparation":"Crush in hot water for steam inhalation or warm gently in a cloth bundle.","safety":"Avoid direct contact of hot seeds with sensitive skin."},{"name":"Eucalyptus","use":"Natural cineole decongestant that breaks up thick nasal secretions.","preparation":"Add 2-3 drops of essential oil to a steam bowl.","safety":"Never ingest essential oils; keep away from small children."},{"name":"Ginger","use":"Promotes drainage of frontal and maxillary sinuses through warming circulation.","preparation":"Drink fresh ginger tea or apply a warm external ginger compress.","safety":"Stop if skin application causes burning or irritation."}],"herbalRemedyTips":["Ajwain herbal steam inhalation: Add 1 tablespoon of crushed carom seeds (ajwain) to a bowl of steaming water; cover head with a towel and inhale deeply for 5-7 minutes.","Warm Ginger forehead compress: Dip a washcloth in warm ginger-steeped water, wring out, and place over forehead and bridge of the nose for 10 minutes to drain sinus pressure.","Tulsi-Black Pepper hot brew: Drink a steaming cup of Tulsi tea infused with crushed black pepper and a dash of lemon juice to stimulate mucus drainage."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"asthma","name":"Asthma","category":"Respiratory","icon":"lungs","summary":"Complementary wellbeing alongside prescribed asthma care.","serious":true,"perspective":"Ayurvedic traditions describe seasonal balance, warmth, rest, and individual constitution as relevant to respiratory comfort. This is a traditional framework, not a modern diagnosis.","tryToday":["Rest and hydrate","Use warm fluids","Try saline nasal rinse safely","Avoid smoke and strong scents","Keep indoor air comfortably humid"],"foods":["Warm soups","Soft fruits","Ginger in food","Protein-rich meals","Warm caffeine-free drinks"],"limit":["Smoke exposure","Known allergens","Alcohol when unwell","Unproven essential-oil ingestion","Foods that worsen symptoms"],"practices":["Gentle breathing only when comfortable","Adequate sleep","Warm shower","Seasonal routine"],"therapies":["Herbal traditions","Hydration","Sleep & recovery","Breathing exercises","Yoga"],"safety":"Breathing symptoms can become urgent. Herbal products may interact with respiratory, allergy, or other medicines.","herbs":[{"name":"Pushkarmool (Inula racemosa)","use":"Renowned Ayurvedic bronchodilator herb that expands airways and relieves dyspnea.","preparation":"Use only quality-standardized powder under professional Ayurvedic supervision.","safety":"Never replace prescribed emergency inhalers; purely complementary."},{"name":"Vasaka","use":"Clears bronchial pathways by liquefying thick mucus plugs.","preparation":"Consume as directed in traditional preparations.","safety":"Strictly complementary; monitor with your pulmonologist."},{"name":"Pippali (Long Pepper)","use":"Rejuvenates lung tissue (Pranavaha Srotas) and improves respiratory capacity.","preparation":"Take 1 small pinch with honey or warm milk.","safety":"Avoid during acute acid flares or fever."}],"herbalRemedyTips":["Warm Mustard oil & Camphor chest rub: Gently warm 1 tablespoon of mustard oil with a tiny pinch of natural camphor and rock salt; massage gently across upper chest and back to ease airway constriction.","Pippali & Raw Honey lung tonic: Take 1/8 tsp Pippali (long pepper) powder blended into 1 tsp pure honey twice daily to build bronchial resilience (always alongside prescribed medications).","Tulsi & Ginger warm infusion: Sip warm freshly brewed holy basil and ginger tea to maintain clear, warm breathing channels during cool or damp weather."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"type-2-diabetes","name":"Type 2 Diabetes","category":"Lifestyle","icon":"gauge","summary":"Lifestyle support alongside medical treatment.","serious":true,"perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Gudmar (Gymnema sylvestre)","use":"Known as the 'sugar destroyer' for reducing sweet taste perception and supporting glycemic balance.","preparation":"Take 1/2 tsp powder in warm water 30 minutes before meals.","safety":"May interact with insulin and diabetes medications; requires clinician coordination."},{"name":"Fenugreek (Methi)","use":"High in 4-hydroxyisoleucine and soluble fiber that slows carbohydrate digestion.","preparation":"Soak 1 tsp seeds overnight; chew seeds and drink water in morning.","safety":"Can affect blood clotting; use caution before surgery."},{"name":"Jamun Seed (Syzygium cumini)","use":"Contains jamboline which helps slow starch-to-sugar conversion.","preparation":"Take 1/2 tsp dried seed powder with water once daily.","safety":"Monitor blood sugar closely to prevent hypoglycemia."}],"herbalRemedyTips":["Overnight Fenugreek (Methi) seed water: Soak 1 teaspoon of whole fenugreek seeds in a cup of water overnight; in the morning, chew the soft seeds and drink the infused water.","Gudmar (Gymnema) pre-meal tea: Sip 1/2 tsp of Gymnema sylvestre powder in warm water half an hour before lunch to curb sugar cravings and stabilize post-prandial spikes.","Cinnamon & Amla daily tonic: Stir 1/4 tsp pure Ceylon cinnamon and 1/2 tsp Amla powder into warm water; consume with breakfast for antioxidant and insulin-supportive benefits."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"high-blood-pressure","name":"High Blood Pressure","category":"Lifestyle","icon":"heart-pulse","summary":"Supportive habits alongside regular monitoring.","serious":true,"perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Arjuna Bark (Terminalia arjuna)","use":"Celebrated Ayurvedic cardiac tonic that strengthens heart muscles and supports vascular tone.","preparation":"Simmer 1/2 tsp powder in 1/2 cup water and 1/2 cup milk (Ksheerapaka) until water evaporates; drink once daily.","safety":"Coordinate with cardiologist; do not stop antihypertensive drugs."},{"name":"Hibiscus (Japa)","use":"Antioxidant-rich calyces that act as a gentle natural ACE-inhibitor and mild diuretic.","preparation":"Steep 1-2 tsp dried petals in boiling water for 10 minutes; drink cooled.","safety":"Avoid during pregnancy; may lower blood pressure additively with drugs."},{"name":"Brahmi (Bacopa)","use":"Calms sympathetic nervous system hyperactivity and stress-induced blood pressure spikes.","preparation":"Drink as a mild herbal tea in the evening.","safety":"May cause mild nausea on an empty stomach."}],"herbalRemedyTips":["Arjuna Ksheerapaka cardiac brew: Boil 1/2 tsp Arjuna bark powder in 1/2 cup water and 1/2 cup skim milk until reduced by half; strain and drink once daily to tonify arterial elasticity.","Hibiscus (Japa) flower iced infusion: Steep 1 tablespoon of dried hibiscus flowers in hot water, chill with a twist of lemon, and sip in the afternoon as a refreshing cardiovascular support.","Brahmi evening relaxation tea: Drink 1/2 tsp Brahmi powder in warm water before bedtime to calm the nervous system and decrease nocturnal arterial tension."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"high-cholesterol","name":"High Cholesterol","category":"Lifestyle","icon":"chart","summary":"Heart-healthy everyday choices.","perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Guggulu (Commiphora mukul)","use":"Purified resin traditionally used to clear lipid accumulation (Medo Dhatu) and support liver bile clearance.","preparation":"Take standardized formulations under clinical guidance.","safety":"May interact with liver-metabolized medications; avoid in pregnancy."},{"name":"Garlic (Lasuna)","use":"Contains allicin and sulfuric compounds that inhibit hepatic cholesterol synthesis.","preparation":"Crush 1 small clove, let stand 5 minutes, and take with warm water before meals.","safety":"May increase bleeding risk; avoid high doses with anticoagulants."},{"name":"Coriander Seeds (Dhanyaka)","use":"Traditional cooling diuretic and lipid-metabolic stimulant.","preparation":"Boil 2 tbsp seeds in 1 glass of water; strain and drink daily.","safety":"Safe for culinary use; avoid if allergic to coriander."}],"herbalRemedyTips":["Crushed Raw Garlic & Warm Water: Crush 1 small clove of garlic, let it sit for 5 minutes to release allicin, and swallow with warm water before breakfast to support arterial clarity.","Coriander Seed (Dhanya) lipid flush: Boil 2 tablespoons of crushed coriander seeds in 2 cups of water until reduced to 1 cup; strain and drink warm daily.","Triphala evening detox: Take 1 tsp Triphala powder with warm water before sleep to enhance hepatic fat processing and cleanse gastrointestinal channels."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"weight-management","name":"Weight Management","category":"Lifestyle","icon":"scale","summary":"Sustainable nourishment, movement, and sleep habits.","perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Triphala","use":"Supports healthy elimination, reduces metabolic sluggishness (Meda), and optimizes gut microbiome balance.","preparation":"Take 1 tsp with warm water before bed.","safety":"Discontinue if loose stools occur."},{"name":"Cinnamon (Twak)","use":"Assists glucose metabolism and reduces mid-day sugar cravings.","preparation":"Add 1/4 tsp to oatmeal, herbal tea, or warm water.","safety":"Prefer Ceylon cinnamon over Cassia to avoid excess coumarin."},{"name":"Green Tea & Ginger","use":"Polyphenols and gingerols gently boost thermogenesis and lipid oxidation.","preparation":"Brew whole green tea leaves with a slice of fresh ginger.","safety":"Limit evening consumption due to natural caffeine."}],"herbalRemedyTips":["Warm Lemon, Honey & Ginger morning ritual: Mix juice of 1/2 lemon, 1 tsp raw honey, and 1/2 tsp freshly grated ginger in lukewarm (never boiling) water; drink upon waking to kindle Agni.","Cinnamon quill simmer water: Boil 1 Ceylon cinnamon stick in 1 liter of water for 10 minutes; carry in a flask and sip warm between meals to curb cravings.","Triphala & Guggulu evening routine: Take 1/2 tsp Triphala powder in warm water at bedtime to clear digestive stagnation and promote efficient overnight metabolic clearance."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"fatty-liver","name":"Fatty Liver","category":"Lifestyle","icon":"shield","summary":"Lifestyle support guided by a healthcare professional.","serious":true,"perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Bhumyamalaki (Phyllanthus niruri)","use":"Renowned Ayurvedic hepatoprotective herb that promotes liver cell regeneration and bile flow.","preparation":"Steep 1/2 tsp powder in warm water; take on an empty stomach.","safety":"Consult physician for ongoing liver enzyme monitoring."},{"name":"Kalmegh (Andrographis paniculata)","use":"The 'King of Bitters' that reduces hepatic inflammation and supports detox pathways.","preparation":"Take under professional guidance in standardized doses.","safety":"Intensely bitter; avoid during pregnancy."},{"name":"Turmeric & Amla","use":"Potent antioxidant combination that reduces hepatic steatosis and oxidative stress.","preparation":"Mix equal parts (1/4 tsp each) in warm water daily.","safety":"Use culinary amounts with active gallstones."}],"herbalRemedyTips":["Bhumyamalaki morning decoction: Steep 1/2 tsp Bhumyamalaki (Phyllanthus) powder in 1 cup boiling water for 5 minutes; strain and drink warm on an empty stomach to protect hepatocytes.","Fresh Amla & Turmeric elixir: Mix 20 ml pure fresh Amla juice with 1/4 tsp pure turmeric powder and a glass of warm water every morning to reduce liver oxidative stress.","Dandelion & Kalmegh bitter tea: Drink a mild cup of bitter herbal tea (such as roasted dandelion root or Kalmegh) 20 minutes before meals to stimulate bile excretion."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"metabolic-wellness","name":"Metabolic Wellness","category":"Lifestyle","icon":"sparkles","summary":"Everyday habits supporting metabolic health.","perspective":"Ayurveda traditionally emphasizes daily rhythm, balanced meals, movement, sleep, and constitution. These ideas can complement but never replace medical monitoring or prescribed treatment.","tryToday":["Take a 10-minute walk","Build a balanced plate","Drink water instead of sugary drinks","Keep a consistent bedtime","Track one habit without judgment"],"foods":["Fiber-rich vegetables","Beans when tolerated","Whole grains","Nuts and seeds","Unsweetened foods"],"limit":["Sugary drinks","Excess alcohol","Highly processed snacks","Large portions","Starting supplements without advice"],"practices":["Dinacharya","Mindful eating","Gentle yoga","Regular sleep schedule"],"therapies":["Nutrition","Exercise & movement","Yoga","Mindfulness","Ayurveda"],"safety":"Do not stop prescribed medication. Coordinate diet, exercise, and supplements with your clinician, especially when managing blood sugar, blood pressure, liver, or heart conditions.","herbs":[{"name":"Turmeric (Haridra)","use":"Enhances mitochondrial function and controls chronic low-grade systemic inflammation.","preparation":"Incorporate into daily cooking or take with black pepper and healthy fats.","safety":"Avoid high-dose supplements with blood thinners."},{"name":"Amla (Indian Gooseberry)","use":"Richest natural source of stable vitamin C; revitalizes cellular metabolism (Rasayana).","preparation":"Eat 1 fresh amla daily or take 1/2 tsp powder in water.","safety":"Safe for long-term food use."},{"name":"Fenugreek","use":"Optimizes nutrient partitioning and carbohydrate breakdown.","preparation":"Include in whole-food recipes or herbal teas.","safety":"Consult doctor if on thyroid or clotting medications."}],"herbalRemedyTips":["Classical Nisha-Amalaki combination: Blend equal parts pure Turmeric (Haridra) and Amla powder (1/2 tsp total); take with warm water twice daily to maintain vibrant metabolic homeostasis.","Barley (Yava) metabolic water: Simmer 2 tablespoons of whole barley grains in 4 cups of water for 20 minutes; strain and drink throughout the day to support lymphatic and urinary flow.","Warm Cumin & Coriander digestive tea: Sip a warm infusion of cumin and coriander seeds between meals to prevent sluggish cellular accumulation (Ama)."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"acne","name":"Acne","category":"Skin","icon":"circle-dot","summary":"Gentle skin care and lifestyle considerations.","perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Neem (Azadirachta indica)","use":"Powerfully antibacterial and cooling; clears blood heat (Rakta sodhana) that triggers breakout eruptions.","preparation":"Drink mild neem tea or apply diluted neem oil/paste topically.","safety":"Bitter and cooling; avoid prolonged high doses or pregnancy."},{"name":"Manjistha (Rubia cordifolia)","use":"Premier Ayurvedic blood cleanser and lymph mover; calms inflamed cystic acne.","preparation":"Take 1/2 tsp in warm water once daily.","safety":"May temporarily darken urine; harmless."},{"name":"Sandalwood (Chandan)","use":"Topical cooling astringent that reduces sebum, redness, and blemish swelling.","preparation":"Make a paste with pure sandalwood powder and rosewater; apply to spots.","safety":"Always patch-test before full facial use."}],"herbalRemedyTips":["Sandalwood & Rosewater spot paste: Mix pure sandalwood powder with organic rose water to form a smooth paste; dab onto active blemishes and leave for 15-20 minutes before rinsing with cool water.","Manjistha & Neem internal purifying tea: Sip 1/2 tsp Manjistha root powder steeped in hot water once daily to purify the bloodstream and cool skin Pitta from within.","Fresh Aloe Vera soothing application: Extract fresh gel from an aloe vera leaf and apply a thin layer over clean skin morning and night to calm redness and prevent post-acne marks."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"eczema","name":"Eczema","category":"Skin","icon":"hand","summary":"Barrier-supportive care for sensitive skin.","perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Khadir (Acacia catechu)","use":"Celebrated classical herb for dermatological conditions (Kushtha) that restores barrier integrity.","preparation":"Consume under Ayurvedic guidance as a decoction or topical wash.","safety":"Ensure clinical diagnosis by a dermatologist."},{"name":"Neem","use":"Soothes intense itching (Kandu) and prevents secondary bacterial skin infection.","preparation":"Apply cold-pressed virgin coconut oil infused with neem leaves.","safety":"Do not apply pure neem essential oil undiluted."},{"name":"Colloidal Oatmeal","use":"Beta-glucans coat the epidermis, retaining hydration and quenching eczema itch.","preparation":"Add finely ground oat flour to a lukewarm bath.","safety":"Avoid if you have known oat allergies."}],"herbalRemedyTips":["Neem & Virgin Coconut oil application: Gently apply cold-pressed coconut oil infused with neem leaves onto dry, itchy eczema patches twice daily after bathing to rebuild the lipid barrier.","Colloidal Oatmeal lukewarm soak: Dissolve 1 cup of finely powdered colloidal oatmeal into a lukewarm bath; soak for 10-15 minutes without harsh soap, then gently pat dry.","Licorice & Ghee barrier ointment: Mix 1/4 tsp pure licorice root powder with 1 tsp warm grass-fed ghee; dab lightly onto unbroken itchy plaques to cool inflammation."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"dry-skin","name":"Dry Skin","category":"Skin","icon":"droplet","summary":"Simple moisture and skin-barrier support.","perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Sesame Oil (Tila Taila)","use":"Deeply penetrating and warming oil that pacifies dry Vata qualities in skin layers.","preparation":"Warm slightly and perform full-body self-massage (Abhyanga) before showering.","safety":"Avoid if you have acute inflammatory skin eruptions."},{"name":"Shatavari","use":"Nourishes the deeper fluid tissues (Rasa and Mamsa Dhatus), moisturizing skin from the inside out.","preparation":"Take 1/2 tsp in warm almond or dairy milk with ghee.","safety":"Avoid in estrogen-sensitive conditions without advice."},{"name":"Almond Oil (Badam Taila)","use":"Rich in vitamin E and squalene to soften flaking skin.","preparation":"Apply a few drops of pure sweet almond oil to damp skin.","safety":"Avoid if allergic to tree nuts."}],"herbalRemedyTips":["Warm Sesame Oil Abhyanga: Warm 2-3 tablespoons of unrefined sesame oil and massage with firm strokes over dry limbs 15 minutes prior to a warm shower to deeply hydrate skin tissue.","Shatavari & Warm Milk internal nourishment: Whisk 1/2 tsp Shatavari root powder into a cup of warm milk with 1/2 tsp cow ghee before bed to lubricate dry bodily tissues from within.","Raw Milk & Honey gentle wash: Mix 1 tablespoon of raw milk with 1/2 tsp honey; smooth over dry face and neck, leave for 10 minutes, and rinse with tepid water for instant dewy softness."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"psoriasis","name":"Psoriasis","category":"Skin","icon":"layers","summary":"Complementary comfort alongside medical treatment.","serious":true,"perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Wrightia tinctoria (Swetha Kutaja)","use":"Classical herb used in traditional Siddha and Ayurveda oils (such as 777 oil) for thick plaque reduction.","preparation":"Use clinically standardized medicated coconut oil formulations topically.","safety":"Always coordinate with your dermatologist."},{"name":"Bakuchi (Psoralea corylifolia)","use":"Traditional rasayana for keratinocyte balance and chronic dry scaling.","preparation":"Use only micro-amounts under strict medical supervision due to photosensitivity.","safety":"Can cause severe blistering if exposed to direct sun without guidance."},{"name":"Manjistha","use":"Cools overheated liver-blood axis and calms rapid skin proliferation.","preparation":"Drink as a mild tea or take in traditional polyherbal tablets.","safety":"Drink plenty of water while taking."}],"herbalRemedyTips":["Wrightia tinctoria medicated oil massage: Apply authentic Wrightia tinctoria-infused coconut oil onto thickened plaques twice daily to soften scales and slow epidermal turnover.","Neem leaf soothing rinse: Simmer a fistful of fresh neem leaves in 2 liters of water for 15 minutes, cool to room temperature, and use as a soothing wash over scaled skin areas.","Manjistha & Turmeric systemic tea: Drink 1/2 tsp Manjistha and 1/4 tsp turmeric in warm water daily to cool systemic inflammatory heat and reduce flare frequency."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"dandruff","name":"Dandruff","category":"Skin","icon":"snowflake","summary":"Scalp care for flaking and irritation.","perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Fenugreek (Methi)","use":"Rich in mucilage, proteins, and nicotinic acid; clears flaky scalp and moisturizes roots.","preparation":"Soak seeds overnight and grind into a smooth scalp mask.","safety":"Rinse thoroughly to remove seed remnants."},{"name":"Neem","use":"Naturally antifungal against Malassezia yeast responsible for flaky scalp.","preparation":"Boil neem leaves in water for a post-wash hair rinse or use neem scalp oil.","safety":"Safe for topical scalp use; avoid eyes."},{"name":"Tea Tree","use":"Terpinen-4-ol acts as a targeted natural scalp purifier.","preparation":"Add 2-3 drops to your regular shampoo or jojoba carrier oil.","safety":"Never apply pure undiluted tea tree oil to scalp."}],"herbalRemedyTips":["Soaked Fenugreek (Methi) scalp mask: Grind 2 tablespoons of overnight-soaked fenugreek seeds into a creamy paste with 2 tablespoons of yogurt; apply to scalp for 25 minutes before rinsing.","Neem water clarifying rinse: Boil 20 fresh neem leaves in 4 cups of water for 10 minutes, strain, and let cool; pour over scalp after washing as a leave-in antifungal tonic.","Warm Coconut & Lemon scalp massage: Warm 2 tablespoons of coconut oil with 1 teaspoon of fresh lemon juice; massage into scalp roots 30 minutes before shampooing to loosen stubborn flakes."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"hair-fall","name":"Hair Fall","category":"Skin","icon":"scissors","summary":"General hair and scalp wellness support.","serious":true,"perspective":"Traditional Ayurveda considers skin wellbeing in relation to constitution, climate, digestion, and daily care. Modern skin conditions have varied causes and may need medical diagnosis.","tryToday":["Use a fragrance-free moisturizer","Take a lukewarm shower","Avoid scratching","Wear breathable fabrics","Patch-test new products"],"foods":["Colorful vegetables","Adequate protein","Omega-3-rich foods","Water","Foods you personally tolerate"],"limit":["Known irritants","Harsh scrubs","Fragranced products","Picking or scratching","Unverified topical remedies"],"practices":["Gentle self-care routine","Cooling relaxation","Mindful stress care","Traditional oiling only if tolerated"],"therapies":["Skin care","Nutrition","Stress support","Ayurveda","Mindfulness"],"safety":"Do not apply herbs or essential oils to broken skin. Seek care for spreading redness, fever, pain, pus, eye involvement, or rapidly changing lesions.","herbs":[{"name":"Bhringraj (Eclipta alba)","use":"Known as the 'Ruler of Hair' (Keshraj); activates dormant follicles and prevents premature thinning.","preparation":"Warm authentic Bhringraj herbal oil and massage into roots 2-3 times weekly.","safety":"Keep on scalp for at least 1 hour or overnight."},{"name":"Amla","use":"Abundant in natural vitamin C and iron; strengthens follicular anchoring and prevents split ends.","preparation":"Consume daily as a fruit/juice or make a powder paste for hair roots.","safety":"Mild cooling effect; very safe."},{"name":"Brahmi","use":"Reduces stress-related telogen effluvium hair shedding and improves scalp microcirculation.","preparation":"Apply Brahmi oil or take Brahmi tea.","safety":"Ensure quality sourcing."}],"herbalRemedyTips":["Warm Bhringraj oil overnight treatment: Warm 1-2 tablespoons of Bhringraj oil and massage into scalp roots with gentle fingertips for 10 minutes; leave overnight and wash with a mild herbal shampoo.","Amla & Hibiscus petal hair pack: Mix 2 tablespoons of Amla powder and 1 tablespoon of hibiscus petal powder with warm water into a paste; apply to roots for 30 minutes once weekly.","Daily Amla & Honey intake: Consume 1 teaspoon of pure fresh Amla juice or 1/2 tsp organic Amla churna mixed with raw honey every morning to deliver bioavailable nutrients to hair follicles."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"back-pain","name":"Back Pain","category":"Pain","icon":"accessibility","summary":"Gentle movement and recovery support.","perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Ashwagandha","use":"Strengthens paraspinal muscles, relieves neuromuscular tension, and reduces chronic lumbar ache.","preparation":"Take 1/2 tsp in warm milk with a pinch of nutmeg before sleep.","safety":"Consult doctor if managing thyroid disorders."},{"name":"Shallaki (Boswellia serrata)","use":"Boswellic acids inhibit 5-LOX inflammatory enzyme, easing spinal disc and facet joint discomfort.","preparation":"Take standardized extract capsules with meals as recommended.","safety":"Safe for long-term use; may occasionally cause mild stomach upset."},{"name":"Castor Oil (Eranda)","use":"Traditional premier remedy for pacifying localized lumbar Vata and relaxing rigid muscle knots.","preparation":"Apply warm castor oil compress over lower back.","safety":"External application is safe; do not ingest without advice."}],"herbalRemedyTips":["Mahanarayan Taila lumbar massage: Warm 2 tablespoons of traditional Mahanarayan oil and gently massage over the lower back in circular motions, followed by a warm hot water bottle for 20 minutes.","Castor oil heat pack (Kati Sweda): Saturate a cotton flannel with warm castor oil, place over lower back, cover with plastic wrap and a hot water bottle for 25 minutes to dissolve deep spinal spasms.","Shallaki & Golden Milk evening tonic: Take Boswellia resin extract alongside warm turmeric-black pepper milk before bed to ease nocturnal lumbar inflammation and morning stiffness."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"neck-pain","name":"Neck Pain","category":"Pain","icon":"move","summary":"Everyday mobility and ergonomic care.","perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Bala (Sida cordifolia)","use":"Ayurvedic nerve and muscle-strengthening herb that repairs fatigued cervical muscles.","preparation":"Apply Bala-infused massage oil or take formulated decoctions.","safety":"Avoid raw ephedra-containing species; use standardized Ayurvedic preparations."},{"name":"Camphor & Sesame","use":"Provides deep penetrating warmth that dispels acute cervical stiffness from desk strain.","preparation":"Dissolve a pinch of edible camphor in warm sesame oil for topical rub.","safety":"Do not apply near eyes or to broken skin."},{"name":"Ashwagandha","use":"Relaxes chronic tension in upper trapezius and levator scapulae muscles.","preparation":"Take 1/2 tsp powder in warm milk.","safety":"Check for interactions with sedatives."}],"herbalRemedyTips":["Warm Sesame & Camphor neck rub: Warm 1 tablespoon of pure sesame oil with a pinch of natural camphor; massage gently from the base of the skull down to shoulders twice daily.","Ashwagandha trapezius relaxant draught: Drink 1/2 tsp Ashwagandha root powder in a cup of warm milk with a pinch of nutmeg before sleeping to release cervical muscle holding patterns.","Dry Heat Ginger salt poultice: Heat 1 cup of coarse salt with 1 tsp dry ginger powder in a dry pan, wrap in a thick cotton cloth, and press gently against stiff neck joints for soothing relief."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"joint-pain","name":"Joint Pain","category":"Pain","icon":"bone","summary":"Comfortable movement and recovery habits.","perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Nirgundi (Vitex negundo)","use":"Celebrated analgesic and anti-inflammatory leaf that disperses joint edema and acute pain.","preparation":"Warm crushed leaves as a poultice or apply Nirgundi oil.","safety":"External application is exceptionally well-tolerated."},{"name":"Shallaki (Boswellia)","use":"Protects joint cartilage matrix and improves range of motion.","preparation":"Take with warm water or milk as directed.","safety":"Coordinate with rheumatologist if on prescription anti-inflammatories."},{"name":"Ginger (Shunti)","use":"Inhibits prostaglandins and leukotrienes to decrease synovial stiffness.","preparation":"Use fresh ginger in cooking or drink dried ginger tea.","safety":"Watch for mild heartburn if taken in large quantities."}],"herbalRemedyTips":["Nirgundi leaf warm poultice (Patra Pinda): Warm crushed Nirgundi leaves in a pan with 1 tsp castor oil, wrap in a cotton cloth, and press gently onto aching joints for 15 minutes.","Ginger & Turmeric joint brew: Boil 1/2 tsp dry ginger powder and 1/2 tsp turmeric in 2 cups water until reduced to 1 cup; drink warm twice daily to reduce synovial joint inflammation.","Kottamchukkadi Taila warm application: Warm traditional herbal oil and gently stroke over aching knee or finger joints before a warm bath to restore effortless mobility."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"arthritis","name":"Arthritis","category":"Pain","icon":"hand","summary":"Complementary wellbeing alongside clinical care.","serious":true,"perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Yogaraj Guggulu","use":"Premier classical Ayurvedic polyherbal resin formula targeting chronic degenerative and inflammatory arthritis.","preparation":"Take under guidance of an Ayurvedic physician with warm water.","safety":"Avoid during pregnancy or acute gastritis."},{"name":"Rasna (Alpinia galanga)","use":"Alleviates pain and swelling in chronic rheumatoid and osteoarthritic conditions.","preparation":"Consume as Rasnasaptak Kwath (decoction) as prescribed.","safety":"Coordinate with primary physician."},{"name":"Ashwagandha & Shallaki","use":"Synergistic adaptogenic and anti-inflammatory combination protecting joint cartilage.","preparation":"Take standardized herbal extracts with meals.","safety":"Monitor if taking immunosuppressants."}],"herbalRemedyTips":["Rasnasaptak Kwath morning brew: Simmer 1/2 tsp Rasna powder and 1/4 tsp dry ginger in 1.5 cups water until halved; drink warm on an empty stomach to clear inflammatory Ama from joints.","Fenugreek seed morning chew: Swallow 1/2 tsp dry-roasted fenugreek seed powder with warm water every morning to counteract stiff, creaking joints.","Warm Vishagarbha or Dhanwantharam oil rub: Lightly apply warm medicated herbal oil over arthritic joints without heavy pressure, followed by a warm steam towel wrap."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"muscle-soreness","name":"Muscle Soreness","category":"Pain","icon":"dumbbell","summary":"Recovery support after activity.","perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Bala (Sida cordifolia)","use":"Builds muscle tissue (Mamsa Dhatu) and speeds repair of post-exercise micro-tears.","preparation":"Take Bala powder in warm milk or use Ksheerabala oil.","safety":"Use reputable standardized brands."},{"name":"Turmeric","use":"Curcumin drastically reduces delayed onset muscle soreness (DOMS) and muscle damage markers.","preparation":"Consume in warm milk or with meals.","safety":"Safe for daily consumption."},{"name":"Eucalyptus","use":"Natural counterirritant that stimulates local capillary blood flow to flush lactic acid.","preparation":"Add a few drops to a bath or carrier oil.","safety":"Never swallow essential oils."}],"herbalRemedyTips":["Epsom Salt & Eucalyptus muscle soak: Add 1 cup of Epsom salts and 5 drops of eucalyptus oil to a warm bathtub; soak for 20 minutes to draw out lactic acid and relax tight muscle fibers.","Bala & Ashwagandha post-workout milk: Whisk 1/2 tsp each of Bala and Ashwagandha powder into warm almond or cow's milk with a pinch of cardamom to accelerate cellular muscle recovery.","Turmeric & Ghee topical salve: For acute muscle strains, mix 1/2 tsp turmeric powder with warm ghee into a thick paste and apply over the sore muscle, covering with a soft cloth."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"stiffness","name":"Stiffness","category":"Pain","icon":"stretch-horizontal","summary":"Gentle mobility for everyday stiffness.","perspective":"Ayurvedic practice traditionally discusses movement, warmth, rest, and individualized oil massage. Pain also needs modern assessment when severe, persistent, traumatic, or unexplained.","tryToday":["Use gentle comfortable movement","Adjust your workstation","Take movement breaks","Try a warm or cool pack","Prioritize restorative sleep"],"foods":["A varied Mediterranean-style pattern","Protein-rich foods","Colorful produce","Whole grains","Adequate fluids"],"limit":["Prolonged bed rest","Painful forced stretching","Excess alcohol","High-dose supplements","Activities that worsen pain"],"practices":["Gentle yoga","Abhyanga if appropriate","Relaxed breathing","Pacing activity"],"therapies":["Exercise & movement","Massage","Yoga","Hydrotherapy","Acupressure"],"safety":"New or worsening pain may require assessment. Massage and stretching are not appropriate for every injury or condition.","herbs":[{"name":"Dry Ginger (Shunti)","use":"Penetrates deep into cold, contracted channels to dissolve stiffness upon waking.","preparation":"Drink 1/2 tsp dry ginger powder boiled in hot water first thing in the morning.","safety":"Caution if prone to acid reflux."},{"name":"Castor Oil","use":"The king of herbs for removing stubborn rigidity and stagnant Vata from joints and tendons.","preparation":"Take 1/2 tsp in warm herbal tea once weekly, or apply warm oil externally.","safety":"Do not overuse as an internal laxative."},{"name":"Nirgundi","use":"Releases tight fascia and increases joint flexibility.","preparation":"Apply warm Nirgundi oil before mobility exercises.","safety":"Topical use is safe and non-irritating."}],"herbalRemedyTips":["Morning Sunthi (Dry Ginger) mobility tea: Boil 1/2 tsp dry ginger powder in 1 cup water for 3 minutes; drink warm first thing in the morning to melt morning stiffness.","Ksheerabala Taila warm joint rub: Smooth warm Ksheerabala oil over stiff shoulders, hips, and knees 20 minutes before a hot shower to limber connective fascia.","Ajwain potli fomentation: Tie 3 tablespoons of ajwain seeds in a cotton pouch, warm on a dry pan, and gently compress stiff joints to penetrate deep therapeutic warmth."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"menstrual-cramps","name":"Menstrual Cramps","category":"Women","icon":"flower-2","summary":"Comfort and self-care during menstruation.","perspective":"Ayurvedic traditions emphasize cyclical rhythms, nourishment, rest, and individualized routines. Symptoms may also reflect conditions that require medical evaluation.","tryToday":["Use a warm pack if comfortable","Choose gentle movement","Keep regular meals","Track symptoms","Make time for rest"],"foods":["Iron-rich foods","Calcium-rich foods","Colorful vegetables","Whole grains","Adequate protein"],"limit":["Excess alcohol","Skipping meals","Unverified hormone products","Personal symptom triggers","High-dose herbal blends"],"practices":["Gentle yoga","Meditation","Mindful eating","Restorative routine"],"therapies":["Yoga","Nutrition","Mindfulness","Ayurveda","Sleep & recovery"],"safety":"Pregnancy, breastfeeding, fertility treatment, and hormone-sensitive conditions require professional advice before herbs or supplements.","herbs":[{"name":"Ajwain (Carom seeds)","use":"Potent antispasmodic that rapidly relieves acute uterine contractions and abdominal colic.","preparation":"Boil 1/2 tsp ajwain with jaggery in water; drink warm.","safety":"Heating nature; avoid if experiencing unusually heavy bleeding."},{"name":"Fennel (Saunf)","use":"Relaxes uterine smooth muscle and reduces prostaglandin-induced cramping.","preparation":"Brew 1 tsp crushed seeds into a hot tea; sip throughout the day.","safety":"Safe and gentle for regular menstrual use."},{"name":"Ginger","use":"Clinically proven to decrease menstrual pain intensity comparable to common pain relievers.","preparation":"Drink warm fresh ginger tea with lemon and honey during the first 3 days of menses.","safety":"Avoid large doses if you have heavy menstrual flow."}],"herbalRemedyTips":["Ajwain & Organic Jaggery warm tea: Boil 1/2 tsp ajwain seeds and 1 teaspoon of organic jaggery (gud) in 1.5 cups water until reduced to 1 cup; sip warm to instantly relieve sharp uterine cramps.","Ginger & Cinnamon soothing brew: Simmer 3 thin slices of fresh ginger and half a cinnamon stick in water for 5 minutes; drink 2-3 times daily during the first 48 hours of your cycle.","Castor oil lower belly compress: Apply warm castor oil to the lower abdomen, place a hot water bottle on top, and rest for 15-20 minutes before bleeding starts to promote smooth pelvic circulation."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"pms","name":"PMS","category":"Women","icon":"calendar-heart","summary":"Lifestyle support through the menstrual cycle.","perspective":"Ayurvedic traditions emphasize cyclical rhythms, nourishment, rest, and individualized routines. Symptoms may also reflect conditions that require medical evaluation.","tryToday":["Use a warm pack if comfortable","Choose gentle movement","Keep regular meals","Track symptoms","Make time for rest"],"foods":["Iron-rich foods","Calcium-rich foods","Colorful vegetables","Whole grains","Adequate protein"],"limit":["Excess alcohol","Skipping meals","Unverified hormone products","Personal symptom triggers","High-dose herbal blends"],"practices":["Gentle yoga","Meditation","Mindful eating","Restorative routine"],"therapies":["Yoga","Nutrition","Mindfulness","Ayurveda","Sleep & recovery"],"safety":"Pregnancy, breastfeeding, fertility treatment, and hormone-sensitive conditions require professional advice before herbs or supplements.","herbs":[{"name":"Shatavari (Asparagus racemosus)","use":"Premier female adaptogen that balances cyclical estrogen-progesterone shifts and calms irritability.","preparation":"Take 1/2 tsp in warm milk once or twice daily during the luteal phase.","safety":"Avoid if you have hormone-sensitive tumors without oncologist advice."},{"name":"Chamomile","use":"Relieves premenstrual mood swings, anxiety, and fluid retention.","preparation":"Steep as tea in the late afternoon or evening.","safety":"Safe and calming."},{"name":"Saffron (Kesar)","use":"Elevates neurotransmitter serotonin levels to curb PMS blues and food cravings.","preparation":"Steep 2-3 strands in warm milk.","safety":"Use only culinary pinches."}],"herbalRemedyTips":["Shatavari & Warm Spiced Milk: Take 1/2 tsp Shatavari root powder in 1 cup of warm milk with a pinch of cardamom every evening during the 10 days before your period to soothe mood swings.","Saffron & Rose petal calming infusion: Steep 3 strands of pure saffron and 1 teaspoon of organic dried rose petals in hot water for 7 minutes; sip slowly to elevate mood and curb irritability.","Fennel & Coriander debloating water: Boil 1/2 tsp each of fennel and coriander seeds in 2 cups of water; strain and drink throughout the day to relieve premenstrual water retention."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"menopause-support","name":"Menopause Support","category":"Women","icon":"sunset","summary":"Wellbeing support through the menopause transition.","perspective":"Ayurvedic traditions emphasize cyclical rhythms, nourishment, rest, and individualized routines. Symptoms may also reflect conditions that require medical evaluation.","tryToday":["Use a warm pack if comfortable","Choose gentle movement","Keep regular meals","Track symptoms","Make time for rest"],"foods":["Iron-rich foods","Calcium-rich foods","Colorful vegetables","Whole grains","Adequate protein"],"limit":["Excess alcohol","Skipping meals","Unverified hormone products","Personal symptom triggers","High-dose herbal blends"],"practices":["Gentle yoga","Meditation","Mindful eating","Restorative routine"],"therapies":["Yoga","Nutrition","Mindfulness","Ayurveda","Sleep & recovery"],"safety":"Pregnancy, breastfeeding, fertility treatment, and hormone-sensitive conditions require professional advice before herbs or supplements.","herbs":[{"name":"Shatavari","use":"Phytoestrogenic rasayana that moistens mucosal tissues, eases hot flashes, and supports vaginal elasticity.","preparation":"Take 1/2 to 1 tsp daily with warm milk or ghee.","safety":"Discuss with doctor if on hormone therapies."},{"name":"Yashtimadhu (Licorice)","use":"Supports adrenal hormone production to buffer declining ovarian estrogen output.","preparation":"Brew as a mild tea or take with Shatavari.","safety":"Avoid if blood pressure is elevated."},{"name":"Vetiver (Khus) & Coriander","use":"Profoundly cooling herbs that quench sudden internal heat and night sweats.","preparation":"Infuse in drinking water or sip as a room-temperature tea.","safety":"Safe and refreshing."}],"herbalRemedyTips":["Shatavari & Yashtimadhu nourishing tonic: Combine 1/2 tsp Shatavari and 1/4 tsp licorice root powder in warm almond milk once daily to nourish depleted Ojas and reduce hot flashes.","Vetiver (Khus) & Coriander cooling water: Soak a pinch of vetiver root and 1 tsp crushed coriander seeds in a glass pitcher of water overnight; sip cool during sudden hot flush episodes.","Brahmi bedtime tea: Drink a cup of warm Brahmi tea 30 minutes before sleep to calm nocturnal temperature spikes and promote deep, uninterrupted rest."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"womens-wellness","name":"General Women’s Wellness","category":"Women","icon":"heart","summary":"Foundational habits across life stages.","perspective":"Ayurvedic traditions emphasize cyclical rhythms, nourishment, rest, and individualized routines. Symptoms may also reflect conditions that require medical evaluation.","tryToday":["Use a warm pack if comfortable","Choose gentle movement","Keep regular meals","Track symptoms","Make time for rest"],"foods":["Iron-rich foods","Calcium-rich foods","Colorful vegetables","Whole grains","Adequate protein"],"limit":["Excess alcohol","Skipping meals","Unverified hormone products","Personal symptom triggers","High-dose herbal blends"],"practices":["Gentle yoga","Meditation","Mindful eating","Restorative routine"],"therapies":["Yoga","Nutrition","Mindfulness","Ayurveda","Sleep & recovery"],"safety":"Pregnancy, breastfeeding, fertility treatment, and hormone-sensitive conditions require professional advice before herbs or supplements.","herbs":[{"name":"Shatavari","use":"The universal feminine tonic that nurtures reproductive health, vitality, and hormonal equilibrium across all life stages.","preparation":"Consume 1/2 tsp daily with warm milk, honey, or ghee.","safety":"Well-tolerated traditional food herb."},{"name":"Lodhra (Symplocos racemosa)","use":"Tones the uterus and maintains healthy vaginal flora and balanced menstrual flow.","preparation":"Use standardized preparations under Ayurvedic guidance.","safety":"Avoid during pregnancy without clinical direction."},{"name":"Amla","use":"Supplies bioavailable iron, vitamin C, and potent antioxidants for radiant energy.","preparation":"Take fresh juice or 1/2 tsp powder in water.","safety":"Safe for daily wellness."}],"herbalRemedyTips":["Daily Shatavari Rasayana: Take 1/2 tsp organic Shatavari churna with 1 tsp warm cow ghee and warm milk every morning as a comprehensive hormonal and reproductive rejuvenation ritual.","Moringa & Amla vitality boost: Add 1/2 tsp moringa leaf powder and 1/2 tsp amla powder to your morning smoothie or warm water for bioavailable plant iron and vibrant energy.","Coriander & Cumin cycle balancing tea: Sip a mild warm infusion of coriander and cumin seeds between meals to keep digestion light and pelvic circulation clear."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"mens-wellness","name":"General Men’s Wellness","category":"Men","icon":"shield-check","summary":"Foundational habits and preventive wellbeing.","perspective":"Traditional Ayurveda approaches vitality through sleep, nourishment, movement, stress balance, and individualized routines. It does not replace screening or medical care.","tryToday":["Take a brisk walk","Protect sleep time","Eat a balanced meal","Pause for relaxed breathing","Schedule overdue preventive care"],"foods":["Vegetables","Whole grains","Legumes","Nuts and seeds","Lean protein"],"limit":["Tobacco","Excess alcohol","Unverified enhancement products","Prolonged sitting","Highly processed foods"],"practices":["Dinacharya","Strength and mobility","Meditation","Mindful eating"],"therapies":["Exercise & movement","Nutrition","Yoga","Meditation","Ayurveda"],"safety":"Sexual, urinary, or reproductive symptoms deserve qualified assessment. Supplements marketed for performance may contain undeclared ingredients.","herbs":[{"name":"Ashwagandha","use":"Increases vitality, muscle strength, natural testosterone synthesis, and stamina.","preparation":"Take 1/2 tsp powder in warm milk with ghee at bedtime.","safety":"Consult doctor if managing prostate cancer or thyroid conditions."},{"name":"Gokshura (Tribulus terrestris)","use":"Tonifies the genitourinary tract, supports healthy prostate function, and boosts libido.","preparation":"Drink 1/2 tsp Gokshura powder boiled in water.","safety":"Safe in moderation; check with clinician if on blood pressure drugs."},{"name":"Pumpkin Seeds","use":"Loaded with zinc, magnesium, and phytosterols essential for prostate cellular health.","preparation":"Eat a handful of raw unsalted seeds daily.","safety":"Nutritious whole food."}],"herbalRemedyTips":["Ashwagandha & Gokshura vitality brew: Whisk 1/2 tsp each of Ashwagandha and Gokshura powder into warm milk with a dash of honey before bed to boost stamina, endurance, and hormonal vitality.","Raw Pumpkin seeds & Honey morning snack: Chew 1 tablespoon of raw unsalted pumpkin seeds with 1/2 tsp raw honey daily to supply essential zinc for healthy prostate tissue.","Triphala evening metabolic cleanser: Take 1/2 tsp Triphala with warm water before sleep to ensure clear metabolic pathways and prevent sluggish circulation."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"mens-stress","name":"Stress & Lifestyle Support","category":"Men","icon":"briefcase","summary":"Practical support for work and life stress.","perspective":"Traditional Ayurveda approaches vitality through sleep, nourishment, movement, stress balance, and individualized routines. It does not replace screening or medical care.","tryToday":["Take a brisk walk","Protect sleep time","Eat a balanced meal","Pause for relaxed breathing","Schedule overdue preventive care"],"foods":["Vegetables","Whole grains","Legumes","Nuts and seeds","Lean protein"],"limit":["Tobacco","Excess alcohol","Unverified enhancement products","Prolonged sitting","Highly processed foods"],"practices":["Dinacharya","Strength and mobility","Meditation","Mindful eating"],"therapies":["Exercise & movement","Nutrition","Yoga","Meditation","Ayurveda"],"safety":"Sexual, urinary, or reproductive symptoms deserve qualified assessment. Supplements marketed for performance may contain undeclared ingredients.","herbs":[{"name":"Ashwagandha","use":"Clinically proven to lower serum cortisol, diminish work burnout, and promote resilience.","preparation":"Take with warm milk or as standardized extract.","safety":"Avoid taking with high doses of sedatives."},{"name":"Brahmi","use":"Sharpens mental focus during high-pressure work while cooling mental irritability.","preparation":"Brew as tea or take with ghee.","safety":"Safe for daytime or evening use."},{"name":"Tulsi","use":"Adaptogenic herb that normalizes physiological stress markers and clears brain fog.","preparation":"Drink 2 cups of hot Tulsi tea throughout the workday.","safety":"Safe and uplifting."}],"herbalRemedyTips":["Ashwagandha Moon Milk: Simmer 1/2 tsp Ashwagandha powder in warm milk with 1/2 tsp ghee, a pinch of nutmeg, and cinnamon before bed to decompress adrenal burnout and promote restorative sleep.","Tulsi & Brahmi workday clarity tea: Steep 5-6 fresh Tulsi leaves and 1/2 tsp Brahmi powder in hot water; sip during afternoon breaks to melt mental tension without drowsiness.","Pratimarsha Nasya with Sesame oil: Instill 2 drops of lukewarm pure sesame oil into each nostril upon waking to stabilize the nervous system against daily stress."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"reproductive-wellness","name":"Reproductive Wellness","category":"Men","icon":"heart-handshake","summary":"General reproductive wellbeing and care.","perspective":"Traditional Ayurveda approaches vitality through sleep, nourishment, movement, stress balance, and individualized routines. It does not replace screening or medical care.","tryToday":["Take a brisk walk","Protect sleep time","Eat a balanced meal","Pause for relaxed breathing","Schedule overdue preventive care"],"foods":["Vegetables","Whole grains","Legumes","Nuts and seeds","Lean protein"],"limit":["Tobacco","Excess alcohol","Unverified enhancement products","Prolonged sitting","Highly processed foods"],"practices":["Dinacharya","Strength and mobility","Meditation","Mindful eating"],"therapies":["Exercise & movement","Nutrition","Yoga","Meditation","Ayurveda"],"safety":"Sexual, urinary, or reproductive symptoms deserve qualified assessment. Supplements marketed for performance may contain undeclared ingredients.","herbs":[{"name":"Gokshura (Tribulus)","use":"Strengthens Shukra Dhatu (reproductive tissue), enhances sperm motility, and cleanses the urinary tract.","preparation":"Boil 1/2 tsp in water or milk.","safety":"Check with clinician if you have prostate enlargement."},{"name":"Shilajit (Purified)","use":"Mineral-rich adaptogen with fulvic acid that enhances cellular ATP, stamina, and spermatogenesis.","preparation":"Dissolve a rice-grain to pea-sized amount of pure resin in warm milk.","safety":"Use only authenticated purified resin; avoid with high uric acid or gout."},{"name":"Safed Musli (Chlorophytum borivilianum)","use":"Traditional spermatogenic and aphrodisiac herb supporting reproductive nourishment.","preparation":"Take with warm milk under Ayurvedic supervision.","safety":"Consult a doctor for fertility workups."}],"herbalRemedyTips":["Gokshura & Milk decoction (Ksheerapaka): Simmer 1/2 tsp Gokshura powder in 1/2 cup water and 1/2 cup milk until reduced by half; drink once daily to tonify reproductive channels.","Purified Shilajit in warm milk: Dissolve a small rice-grain sized portion of purified Shilajit resin in lukewarm milk; drink in the morning under guidance for sustained cellular energy and stamina.","Almond, Date & Saffron Ojas elixir: Blend 5 soaked peeled almonds, 2 soft dates, and 2 strands of saffron into a cup of warm milk; drink as a nourishing evening tonic to build vital essence (Ojas)."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"stress","name":"Stress","category":"Mental","icon":"brain","summary":"Calming practices for everyday stress.","perspective":"Ayurvedic traditions connect emotional balance with daily rhythm, rest, sensory input, nourishment, and constitution. Mental health symptoms have many causes and deserve evidence-based support.","tryToday":["Take five slow breaths","Step outside briefly","Reduce evening screen time","Write down one concern","Connect with someone you trust"],"foods":["Regular balanced meals","Whole grains","Protein-rich foods","Colorful produce","Water"],"limit":["Excess caffeine","Alcohol as a coping tool","Late-night screens","Skipping meals","Self-medicating with supplements"],"practices":["Meditation","Pranayama without breath holding","Gentle yoga","Consistent sleep routine"],"therapies":["Meditation","Mindfulness","Yoga","Breathing exercises","Aromatherapy"],"safety":"Wellness practices can complement professional mental healthcare. Seek urgent help for thoughts of self-harm, inability to stay safe, severe confusion, or a mental health crisis.","herbs":[{"name":"Ashwagandha","use":"Premier adaptogen that regulates the HPA axis, lowers cortisol, and builds nervous resilience.","preparation":"Take 1/2 to 1 tsp in warm milk before sleep.","safety":"Consult clinician if pregnant or with autoimmune conditions."},{"name":"Shankhpushpi (Convolvulus pluricaulis)","use":"Top Ayurvedic brain tonic (Medhya Rasayana) that calms psychic agitation and mental chatter.","preparation":"Take 1/2 tsp powder in warm water or milk twice daily.","safety":"Very gentle and non-sedating."},{"name":"Brahmi (Bacopa monnieri)","use":"Protects hippocampal neurons, modulates neurotransmitters, and dissipates nervous fatigue.","preparation":"Drink as a mild tea or take with ghee.","safety":"Take with food to prevent mild digestive sensitivity."}],"herbalRemedyTips":["Brahmi & Shankhpushpi calming tea: Steep 1/2 tsp each of Brahmi and Shankhpushpi powder in 1 cup hot water for 5 minutes; strain and sip in the late afternoon to quiet a racing mind.","Ashwagandha warm evening latte: Simmer 1/2 tsp Ashwagandha in 1 cup warm oat or cow's milk with a pinch of nutmeg and cinnamon 30 minutes before bed to lower nighttime cortisol.","Shiroabhyanga (Head & Scalp massage): Warm 1 tablespoon of Brahmi or sesame oil and massage with gentle circular motions into the crown of the head and temples to dissipate chronic mental strain."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"sleep-problems","name":"Sleep Problems","category":"Mental","icon":"moon","summary":"Support for a steadier sleep routine.","perspective":"Ayurvedic traditions connect emotional balance with daily rhythm, rest, sensory input, nourishment, and constitution. Mental health symptoms have many causes and deserve evidence-based support.","tryToday":["Take five slow breaths","Step outside briefly","Reduce evening screen time","Write down one concern","Connect with someone you trust"],"foods":["Regular balanced meals","Whole grains","Protein-rich foods","Colorful produce","Water"],"limit":["Excess caffeine","Alcohol as a coping tool","Late-night screens","Skipping meals","Self-medicating with supplements"],"practices":["Meditation","Pranayama without breath holding","Gentle yoga","Consistent sleep routine"],"therapies":["Meditation","Mindfulness","Yoga","Breathing exercises","Aromatherapy"],"safety":"Wellness practices can complement professional mental healthcare. Seek urgent help for thoughts of self-harm, inability to stay safe, severe confusion, or a mental health crisis.","herbs":[{"name":"Tagara (Valeriana wallichii)","use":"Potent natural sedative herb that increases GABA and shortens sleep onset latency.","preparation":"Take 1/4 to 1/2 tsp root powder in warm water 45 minutes before bedtime.","safety":"Do not combine with prescription sedatives or alcohol."},{"name":"Nutmeg (Jaiphal)","use":"Gentle hypnotic spice (Nidrajanana) that induces deep, continuous, restful sleep.","preparation":"Grate a tiny pinch (under 1/8 tsp) into warm milk before bed.","safety":"Keep doses very small; never exceed a culinary pinch."},{"name":"Chamomile","use":"Apigenin binds to benzodiazepine receptors in the brain, promoting tranquility.","preparation":"Steep 1-2 tea bags in covered hot water for 10 minutes.","safety":"Safe for evening routines."}],"herbalRemedyTips":["Warm Nutmeg (Jaiphal) spiced milk: Stir a tiny pinch (less than 1/8 tsp) of freshly grated nutmeg and 1/4 tsp cardamom into warm milk; drink 30 minutes before sleep to induce uninterrupted slumber.","Tagara root bedtime infusion: Steep 1/4 tsp Tagara (Indian Valerian) root powder in warm water under clinician advice to quiet persistent insomnia and midnight awakenings.","Pada Abhyanga (Foot massage with warm ghee): Rub warm cow ghee or sesame oil firmly into the soles of your feet for 5 minutes before slipping into bed to ground erratic Prana and invite sleep."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"mild-anxiety","name":"Mild Anxiety","category":"Mental","icon":"cloud-moon","summary":"Wellness support alongside appropriate care.","serious":true,"perspective":"Ayurvedic traditions connect emotional balance with daily rhythm, rest, sensory input, nourishment, and constitution. Mental health symptoms have many causes and deserve evidence-based support.","tryToday":["Take five slow breaths","Step outside briefly","Reduce evening screen time","Write down one concern","Connect with someone you trust"],"foods":["Regular balanced meals","Whole grains","Protein-rich foods","Colorful produce","Water"],"limit":["Excess caffeine","Alcohol as a coping tool","Late-night screens","Skipping meals","Self-medicating with supplements"],"practices":["Meditation","Pranayama without breath holding","Gentle yoga","Consistent sleep routine"],"therapies":["Meditation","Mindfulness","Yoga","Breathing exercises","Aromatherapy"],"safety":"Wellness practices can complement professional mental healthcare. Seek urgent help for thoughts of self-harm, inability to stay safe, severe confusion, or a mental health crisis.","herbs":[{"name":"Shankhpushpi","use":"Cools the mind, lowers nervous pulse rate, and alleviates anticipatory apprehension.","preparation":"Consume 1/2 tsp with warm water or a spoonful of honey.","safety":"Safe for daily calming support."},{"name":"Jatamansi (Nardostachys jatamansi)","use":"Revered grounding root that calms intense emotional turbulence and nervous tremors.","preparation":"Take under professional guidance in micro-doses.","safety":"Avoid high doses; consult clinician if taking psychiatric medications."},{"name":"Chamomile","use":"Relaxes peripheral tension and calms somatic anxiety sensations.","preparation":"Drink as an afternoon or evening tea.","safety":"Avoid if allergic to daisy family plants."}],"herbalRemedyTips":["Shankhpushpi & Honey morning draught: Mix 1/2 tsp Shankhpushpi powder with 1/2 tsp raw honey in warm water upon waking to stabilize the mind against daytime worry and apprehension.","Warm Cow Ghee Nasya: Place 2 drops of lukewarm melted grass-fed cow ghee into each nostril in the morning to nourish the olfactory nerves and pacify agitated Prana Vata.","Lavender & Cardamom aromatic tea: Steep dried lavender flowers with 1 crushed cardamom pod in hot water; inhale the fragrant aroma deeply before sipping to relax tense shoulders and chest tightness."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"relaxation","name":"Relaxation","category":"Mental","icon":"feather","summary":"Practices to help the body settle.","perspective":"Ayurvedic traditions connect emotional balance with daily rhythm, rest, sensory input, nourishment, and constitution. Mental health symptoms have many causes and deserve evidence-based support.","tryToday":["Take five slow breaths","Step outside briefly","Reduce evening screen time","Write down one concern","Connect with someone you trust"],"foods":["Regular balanced meals","Whole grains","Protein-rich foods","Colorful produce","Water"],"limit":["Excess caffeine","Alcohol as a coping tool","Late-night screens","Skipping meals","Self-medicating with supplements"],"practices":["Meditation","Pranayama without breath holding","Gentle yoga","Consistent sleep routine"],"therapies":["Meditation","Mindfulness","Yoga","Breathing exercises","Aromatherapy"],"safety":"Wellness practices can complement professional mental healthcare. Seek urgent help for thoughts of self-harm, inability to stay safe, severe confusion, or a mental health crisis.","herbs":[{"name":"Damascus Rose","use":"Soothes the energetic heart (Sadhaka Pitta), relieves emotional tension, and invites inner peace.","preparation":"Steep organic dried petals in hot water.","safety":"Gentle and completely safe."},{"name":"Cardamom","use":"Aromatic cooling spice that clarifies the senses and melts muscular tension.","preparation":"Crush pods into herbal teas or chew after meals.","safety":"Safe for daily culinary use."},{"name":"Tulsi","use":"Restores mental serenity and balances bodily systems strained by modern sensory overload.","preparation":"Brew freshly with hot water.","safety":"Safe and non-drowsy."}],"herbalRemedyTips":["Rose Petal & Cardamom tranquility brew: Steep 1 tablespoon of organic dried rose petals and 2 crushed green cardamom pods in boiling water for 5 minutes; strain and sip slowly in a quiet room.","Tulsi & Lemon Balm wind-down tea: Brew holy basil leaves with lemon balm to create an uplifting, soothing herbal infusion that melts tension at the end of the day.","Warm Epsom salt & Lavender foot soak: Soak feet in a basin of warm water with 1/2 cup Epsom salt and 3 drops of lavender oil for 15 minutes to release somatic stress from the body."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"mental-fatigue","name":"Mental Fatigue","category":"Mental","icon":"battery-low","summary":"Restorative habits for mental overload.","perspective":"Ayurvedic traditions connect emotional balance with daily rhythm, rest, sensory input, nourishment, and constitution. Mental health symptoms have many causes and deserve evidence-based support.","tryToday":["Take five slow breaths","Step outside briefly","Reduce evening screen time","Write down one concern","Connect with someone you trust"],"foods":["Regular balanced meals","Whole grains","Protein-rich foods","Colorful produce","Water"],"limit":["Excess caffeine","Alcohol as a coping tool","Late-night screens","Skipping meals","Self-medicating with supplements"],"practices":["Meditation","Pranayama without breath holding","Gentle yoga","Consistent sleep routine"],"therapies":["Meditation","Mindfulness","Yoga","Breathing exercises","Aromatherapy"],"safety":"Wellness practices can complement professional mental healthcare. Seek urgent help for thoughts of self-harm, inability to stay safe, severe confusion, or a mental health crisis.","herbs":[{"name":"Brahmi (Bacopa)","use":"Enhances synaptic transmission, improves recall, and re-energizes an exhausted brain.","preparation":"Take 1/2 tsp with ghee or brew as tea.","safety":"Ensure consistent use for best cognitive benefits."},{"name":"Shankhpushpi","use":"Recharges mental stamina during prolonged study, writing, or complex problem-solving.","preparation":"Mix 1/2 tsp in warm milk with honey.","safety":"Non-stimulating, restorative."},{"name":"Rosemary & Peppermint","use":"Aromatic cineole stimulates cerebral circulation and banishes afternoon mental fog.","preparation":"Inhale essential oil vapors or drink as a tea.","safety":"Avoid applying undiluted oils directly to skin."}],"herbalRemedyTips":["Brahmi Ghrita / Herbal Tea with Ghee: Whisk 1/2 tsp Brahmi powder and 1/2 tsp warm melted ghee into warm water or milk; drink mid-morning to nourish brain lipid tissue and dispel mental exhaustion.","Rosemary & Peppermint focus steam: Add 2 drops of rosemary and 1 drop of peppermint oil to hot water; inhale the refreshing vapors during workday slumps for instant cognitive revival.","Fresh Amla & Raw Honey brain tonic: Consume 1 teaspoon of fresh Amla pulp mixed with raw honey to deliver direct antioxidant fuel and oxygenation to fatigued neural microvessels."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"seasonal-wellness","name":"Immunity & Seasonal Wellness","category":"General","icon":"shield-plus","summary":"Healthy routines through seasonal changes.","perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Guduchi (Giloy)","use":"Immuno-enhancer that purifies blood, stimulates white blood cell activity, and adapts the body to weather shifts.","preparation":"Drink 1/2 tsp powder in warm water daily.","safety":"Coordinate with doctor if on immunosuppressive therapy."},{"name":"Tulsi","use":"Guards against environmental pathogens and clears seasonal bronchial heaviness.","preparation":"Brew as daily tea with black pepper.","safety":"Safe and effective for seasonal transitions."},{"name":"Turmeric","use":"Broad-spectrum immune modulator with antimicrobial and anti-inflammatory power.","preparation":"Cook with turmeric and black pepper or drink Golden Milk.","safety":"Avoid high doses with gallstones."}],"herbalRemedyTips":["Guduchi & Tulsi seasonal brew: Simmer 1/2 tsp Giloy powder and 6 fresh Tulsi leaves in 2 cups water until reduced to 1 cup; drink warm every morning when the seasons change.","Daily Chyawanprash ritual: Take 1 rounded teaspoon of authentic Amla-based Chyawanprash on an empty stomach with warm milk or water to fortify systemic defense (Ojas).","Golden Turmeric-Black Pepper milk: Whisk 1/2 tsp turmeric powder, a pinch of black pepper, and 1/2 tsp ghee into warm milk; sip before bed to protect mucous membranes."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"energy-fatigue","name":"Energy & Fatigue","category":"General","icon":"sun","summary":"Foundational support for everyday energy.","serious":true,"perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Ashwagandha","use":"Restores depleted cellular reserves (Bala) and overcomes chronic systemic exhaustion.","preparation":"Take 1/2 tsp in warm milk with honey or dates.","safety":"Consult clinician if managing chronic fatigue syndrome."},{"name":"Shilajit","use":"Rich in 84+ ionic trace minerals and fulvic acid to accelerate mitochondrial ATP production.","preparation":"Dissolve a tiny pea-sized portion in warm water or milk.","safety":"Ensure authenticated pure grade; avoid in active gout."},{"name":"Shatavari","use":"Rebuilds deep tissue fluids and prevents adrenal burnout from chronic overexertion.","preparation":"Take with warm almond milk.","safety":"Safe for sustained restorative use."}],"herbalRemedyTips":["Ashwagandha & Medjool Date restorative blend: Blend 1/2 tsp Ashwagandha powder, 2 soaked soft dates, 4 soaked peeled almonds, and 1 cup warm milk for a clean, sustained morning energy boost.","Licorice & Amla midday tea: Simmer 1/4 tsp licorice root and 1/2 tsp amla powder in hot water; sip at 2 PM to support adrenal endurance without relying on caffeine.","Warm Cumin-Ginger water: Replace excess coffee with warm water steeped with fresh ginger and cumin seeds to kindle digestive Agni and clear heavy lethargy."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"headache","name":"Headache","category":"General","icon":"circle","summary":"Low-risk support for occasional headaches.","serious":true,"perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Dry Ginger","use":"Topical application provides counter-irritant relief, while tea relieves vascular and tension headache throbbing.","preparation":"Make a forehead paste with water or drink ginger tea.","safety":"Discontinue paste if skin burns or reddens excessively."},{"name":"Coriander Seeds","use":"Cooling Pitta-pacifying herb that relieves throbbing temples and heat-induced headaches.","preparation":"Soak crushed seeds overnight and sip the water.","safety":"Safe and cooling."},{"name":"Peppermint","use":"Menthol eases muscular contractions and improves cranial blood flow.","preparation":"Dilute 1 drop of oil in carrier oil for temple massage.","safety":"Do not apply near eyes."}],"herbalRemedyTips":["Topical Dry Ginger or Sandalwood paste: Mix 1/2 tsp dry ginger powder (for cold/tension headaches) or pure sandalwood powder (for hot/throbbing headaches) with water into a paste; apply to forehead for 15 minutes.","Coriander & Fennel cooling headache draught: Soak 1 tablespoon of crushed coriander and fennel seeds in 1 glass of water overnight; strain and sip throughout the morning to pacify Pitta headache heat.","Peppermint temple & neck rub: Dilute 1 drop of pure peppermint essential oil into 1 teaspoon of almond oil; gently massage into temples and the base of your skull to relieve tension bands."],"evidence":"Professional guidance","warnings":["Severe, sudden, or rapidly worsening symptoms","Chest pain, difficulty breathing, fainting, or confusion","New weakness, uncontrolled bleeding, or severe allergic reaction"]},{"slug":"oral-health","name":"Oral Health","category":"General","icon":"smile","summary":"Daily practices for teeth and gums.","perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Clove (Lavanga)","use":"Contains eugenol with potent analgesic and antibacterial actions against oral pathogens.","preparation":"Apply a drop of diluted clove oil to gums or chew 1 whole clove.","safety":"Never apply undiluted essential oil to inflamed tissue."},{"name":"Neem","use":"Nature's toothbrush; prevents dental plaque, gingivitis, and bad breath.","preparation":"Use neem bark powder for gum massage or chew fresh twigs.","safety":"Safe for oral hygiene; do not swallow large amounts."},{"name":"Triphala","use":"Astringent tannins tone spongy gums, stop bleeding, and inhibit mouth ulcers.","preparation":"Use warm Triphala decoction as a mouth gargle.","safety":"Very safe for daily dental rinsing."}],"herbalRemedyTips":["Gandusha (Oil Pulling with Sesame or Coconut oil): Swish 1 tablespoon of cold-pressed sesame or coconut oil in the mouth for 10-15 minutes every morning before brushing; spit out to bind bacteria and strengthen gum attachment.","Triphala oral rinse: Boil 1/2 tsp Triphala powder in 1 cup water for 3 minutes, cool to lukewarm, and use as an astringent daily mouthwash to tighten gums and heal oral tissues.","Clove & Rock Salt gum massage: Mix a tiny drop of pure clove oil with 1/2 tsp mustard oil and a pinch of fine rock salt; massage gently along gums 2-3 times a week to prevent gingivitis."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"healthy-aging","name":"Healthy Aging","category":"General","icon":"tree-pine","summary":"Movement, connection, and nourishment over time.","perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Amla (Amalaki)","use":"Supreme Ayurvedic longevity rasayana; neutralizes free radicals and maintains youthful tissue tone.","preparation":"Consume 1 tsp fresh fruit or powder daily.","safety":"Safe for long-term daily use."},{"name":"Ashwagandha","use":"Maintains muscle mass, bone density, cognitive recall, and immune vitality with advancing years.","preparation":"Take 1/2 tsp daily in warm milk.","safety":"Check for medication interactions."},{"name":"Brahmi","use":"Preserves neuroplasticity, memory retention, and mental sharpness.","preparation":"Take with ghee or warm water.","safety":"Safe and rejuvenating."}],"herbalRemedyTips":["Brahmi-Amla daily longevity elixir: Stir 1/2 tsp each of Brahmi and organic Amla powder into warm water or milk every morning to nourish brain tissue, protect eyesight, and enhance cellular vitality.","Daily Warm Sesame Oil Abhyanga: Warm unrefined sesame oil and massage joints and limbs before a warm morning bath to prevent age-related skin dryness, bone brittleness, and joint stiffness.","Golden Turmeric & Grass-fed Ghee with meals: Cook daily with pure cow ghee and turmeric to lubricate internal bodily tissues (Dhatus) and protect cardiovascular elasticity."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]},{"slug":"lifestyle-reset","name":"General Detox & Lifestyle Wellness","category":"General","icon":"refresh-cw","summary":"Gentle routines without extreme cleanses.","perspective":"Ayurveda traditionally emphasizes seasonal routines, digestive balance, restorative sleep, movement, and personal constitution as foundations of wellbeing.","tryToday":["Drink water regularly","Eat one colorful meal","Move for ten minutes","Get daylight early in the day","Keep a steady bedtime"],"foods":["Varied vegetables","Whole fruits","Whole grains","Protein-rich foods","Nuts and seeds"],"limit":["Extreme detoxes","Excess alcohol","Very restrictive diets","Unverified supplements","Prolonged inactivity"],"practices":["Dinacharya","Gentle yoga","Mindful eating","Meditation"],"therapies":["Nutrition","Movement","Sleep & recovery","Mindfulness","Ayurveda"],"safety":"General advice must be personalized for age, medications, pregnancy, allergies, and kidney, liver, or other health conditions.","herbs":[{"name":"Triphala","use":"Gently cleanses the entire gastrointestinal tract without stripping essential fluids or microflora.","preparation":"Take 1 tsp with warm water before bed for 7 consecutive days.","safety":"Do not use during active diarrhea."},{"name":"CCF (Cumin, Coriander, Fennel)","use":"Balances all three doshas and sweeps accumulated metabolic toxins (Ama) from bodily channels.","preparation":"Simmer equal parts whole seeds in water and sip warm all day.","safety":"Gentle and safe for continuous use."},{"name":"Fresh Ginger & Lemon","use":"Ignites digestive fire, flushes stagnant water, and kickstarts sluggish liver metabolism.","preparation":"Sip warm ginger-lemon water upon waking.","safety":"Moderate if experiencing active hyperacidity."}],"herbalRemedyTips":["Classical CCF (Cumin-Coriander-Fennel) all-day detox tea: Simmer 1/2 tsp each of whole cumin, coriander, and fennel seeds in 4 cups of water for 5 minutes; keep warm in a thermos and sip between meals to flush Ama.","Triphala 7-day evening reset: Take 1 tsp Triphala powder dissolved in a cup of warm water 45 minutes before sleep for 7 consecutive nights to gently rebalance digestive motility and eliminate gut residue.","Morning Warm Ginger-Lemon flush: Drink a large mug of warm water with juice of 1/4 fresh lemon and 2 thin slices of fresh ginger first thing in the morning to stimulate natural peristalsis."],"evidence":"Limited or mixed","warnings":["Symptoms that are severe, persistent, unusual, or worsening","Chest pain, difficulty breathing, fainting, or confusion","Severe pain, uncontrolled bleeding, or signs of dehydration"]}];
+    const modalities = [{"id":"ayurveda","icon":"🌿","badgeColor":"bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30","name":"Ayurveda","tagline":"The 5,000-Year-Old Vedic Science of Life & Longevity","shortDesc":"A traditional Indian system emphasizing individualized routines, food, movement, and balance.","overview":"Ayurveda defines health not simply as the absence of illness, but as a vibrant state of metabolic, sensory, and spiritual harmony (Swastha). Its fundamental significance in human life is honoring individual constitutional uniqueness (Prakriti) and preventing chronic disease by living in tune with natural biological rhythms.","traditionsTitle":"Ancient Medicinal Traditions","traditionsDesc":"Codified in classical compendiums including Charaka Samhita, Sushruta Samhita, and Ashtanga Hridaya. Ayurveda is built on the Tridosha doctrine (Vata, Pitta, Kapha), the Seven Bodily Tissues (Sapta Dhatu), Digestive Fire (Agni), and the elimination of metabolic toxicity (Ama).","innovationsTitle":"Latest Scientific & Clinical Innovations","innovationsDesc":"Modern systems biology and pharmacology are actively validating classical Ayurvedic formulas. Ayurgenomics correlates genomic single nucleotide polymorphisms (SNPs) with Ayurvedic Prakriti types, proving individualized medicine existed thousands of years ago.","relevanceDailyUse":"Adopt simple morning rituals: warm water with lemon or ginger, tongue scraping, mindful seasonal meals, and early sleep.","safetyNote":"Evidence varies by practice; traditional concepts are educational and do not replace clinical medical diagnoses."},{"id":"herbal-traditions","icon":"🍵","badgeColor":"bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30","name":"Herbal Traditions","tagline":"Earth's Living Botanical Pharmacopeia Across Civilizations","shortDesc":"Plants and spices used across cultures as foods, teas, and therapeutic preparations.","overview":"Herbalism is the foundational root of global pharmacology. Plant secondary metabolites evolved over millions of years to interact with mammalian cell receptors, modulating inflammation, boosting immunity, and accelerating tissue repair without devastating side effects.","traditionsTitle":"Medicinal Traditions & Historical Lineage","traditionsDesc":"From Ayurvedic Dravyaguna (materia medica) and Native American ethnobotany to Traditional European Phytotherapy, herbalists utilized decoctions, infusions, cold extracts, and herbal ghee to balance vital humors.","innovationsTitle":"Latest Innovations & Pharmacology","innovationsDesc":"Supercritical CO2 extraction, HPLC chemical fingerprinting, and standardized active markers ensure consistent potency and purity, transforming ancient folklore into precision phytotherapy.","relevanceDailyUse":"Drink loose-leaf herbal teas (Tulsi for stress, Chamomile for sleep, Ginger for digestion). Use fresh culinary herbs and spices generously.","safetyNote":"Herbs are pharmacologically active and can interact with prescription medications. Consult a healthcare provider."},{"id":"yoga","icon":"🧘","badgeColor":"bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30","name":"Yoga","tagline":"Union of Breath, Neuro-Musculoskeletal Alignment & Mind","shortDesc":"Postures and mindful movement supporting mobility, spinal health, and stress resilience.","overview":"Yoga is not mere gymnastics; it is a profound psycho-somatic science. By marrying conscious biomechanics with continuous breath awareness, it down-regulates sympathetic hyper-arousal, activates vagal nerve tone, restores spinal disc hydration, and harmonizes endocrine output.","traditionsTitle":"Classical Lineage & Philosophy","traditionsDesc":"Grounded in Patanjali's Yoga Sutras (Ashtanga: Yama, Niyama, Asana, Pranayama, Pratyahara, Dharana, Dhyana, Samadhi) and the Hatha Yoga Pradipika, asana practice trains physical stillness so the mind may become still.","innovationsTitle":"Modern Neuroscience & Biomechanics","innovationsDesc":"Neuroimaging reveals regular yoga practice increases gray matter volume in the hippocampus and insula while downregulating the amygdala. Medical yoga is now integrated into cardiac recovery, chronic back pain rehabilitation, and trauma therapy.","relevanceDailyUse":"Practice 15-20 minutes of daily morning movement: Cat-Cow stretches, Downward Dog, Cobra, and gentle twists.","safetyNote":"Adapt practice for joint pain, pregnancy, injury, or severe medical conditions. Never force pain."},{"id":"meditation","icon":"🪷","badgeColor":"bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30","name":"Meditation & Mindfulness","tagline":"Cultivating Mental Stillness, Neuroplasticity & Emotional Equilibrium","shortDesc":"Attention practices helping people manage stress, quiet mental chatter, and build self-awareness.","overview":"Meditation is the intentional training of attention and awareness. Rather than suppressing thoughts, it alters your neurological relationship to them. It quiets the hyperactive Default Mode Network (DMN), preserves telomere length, and shifts brain states from chronic threat (fight-or-flight) to healing equilibrium.","traditionsTitle":"Contemplative Traditions","traditionsDesc":"Stemming from Vedic Dhyana, Buddhist Vipassana (insight), Zen Zazen, and loving-kindness (Metta), these traditions teach the observer consciousness—witnessing thoughts without compulsive identification.","innovationsTitle":"Neuroscience Breakthroughs","innovationsDesc":"Pioneered by neuroscientists like Richard Davidson, studies show just 8 weeks of mindfulness practice physically shrinks the amygdala (fear center) and thickens the prefrontal cortex.","relevanceDailyUse":"Dedicate 10 minutes at sunrise or sunset: sit upright, observe natural inhalations and exhalations, and gently return attention when the mind wanders.","safetyNote":"Not a substitute for emergency psychiatric crisis intervention or professional mental healthcare."},{"id":"breathing-exercises","icon":"🌬️","badgeColor":"bg-sky-500/15 text-sky-700 dark:text-sky-300 border-sky-500/30","name":"Breathing Exercises (Pranayama)","tagline":"Mastery of Vital Breath & Autonomic Nervous System Control","shortDesc":"Slow, comfortable breathing offering direct control over heart rate variability and mental calm.","overview":"Breathing is the unique somatic bridge between voluntary and involuntary physiology. While your heartbeat is automatic, consciously modifying your respiration rhythm instantly reshapes autonomic tone, activates the vagus nerve, and optimizes oxygen-carbon dioxide alveolar diffusion.","traditionsTitle":"Classical Pranayama Traditions","traditionsDesc":"Rooted in Hatha Yoga texts, Pranayama ('expansion of life-force') details specific ratios for inhalation (Puraka), retention (Kumbhaka), and exhalation (Rechaka) to cleanse subtle Nadis (energy pathways).","innovationsTitle":"Pulmonology & Autonomic Science","innovationsDesc":"Modern research shows slow breathing (~5.5 breaths per minute) maximizes Heart Rate Variability (HRV) and respiratory sinus arrhythmia. Nasal breathing stimulates nasal endothelial production of Nitric Oxide (NO)—a potent vasodilator and antimicrobial agent.","relevanceDailyUse":"Practice 5 minutes of Nadi Shodhana before meals or sleep. Use 3 long exhales whenever feeling overwhelmed.","safetyNote":"Stop if dizzy; avoid forceful breath holding (Kumbhaka) without qualified professional guidance."},{"id":"nutrition","icon":"🥗","badgeColor":"bg-green-500/15 text-green-700 dark:text-green-300 border-green-500/30","name":"Nutrition & Ahara Wisdom","tagline":"Food as Sacred Medicine, Metabolic Fuel & Microbiome Nourishment","shortDesc":"A varied, balanced eating pattern supporting metabolic health and digestive harmony.","overview":"In Ayurvedic philosophy: 'Without proper diet, medicine is of no use; with proper diet, medicine is of no need.' Food is not mere calories; it is chemical information that communicates directly with your epigenome and trillions of gut microbes.","traditionsTitle":"Ayurvedic Ahara & Traditional Dietetics","traditionsDesc":"Ayurveda classifies foods by Shad Rasa (Six Tastes: sweet, sour, salty, pungent, bitter, astringent), Virya (thermal potency: heating or cooling), Vipaka (post-digestive effect), and individual digestive fire (Agni).","innovationsTitle":"Metabolomics & Microbiome Science","innovationsDesc":"Cutting-edge metagenomics reveals that personalized gut microbiome composition dictates glycemic spikes far more than simple carb counts. Plant polyphenol diversity directly feeds beneficial bacterial strains like Akkermansia muciniphila.","relevanceDailyUse":"Eat your largest, most nourishing meal at midday when Agni peaks. Favor cooked, spiced vegetables and leave 3-4 hours between meals.","safetyNote":"Nutritional needs differ with allergies, metabolic conditions, and prescribed medications."},{"id":"hydration","icon":"💧","badgeColor":"bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border-cyan-500/30","name":"Hydration & Fluid Balance","tagline":"Cellular Fluid Balance, Lymphatic Cleansing & Metabolic Conductance","shortDesc":"Regular, suitable fluid intake supporting kidney filtration, joint lubrication, and vitality.","overview":"Water is the universal solvent of human biology, comprising ~60% of adult body mass. Proper hydration maintains blood plasma viscosity, transports cellular nutrients, cushions articular joints, and prevents toxic metabolite crystallization in kidneys.","traditionsTitle":"Ayurvedic Water Rituals","traditionsDesc":"Ayurveda warns against chugging large quantities of cold water. It champions Usha Pana (drinking room-temperature or copper-infused water upon waking) and sipping warm water throughout the day to kindle digestive fire (Dipana).","innovationsTitle":"Cellular Electrolyte Biophysics","innovationsDesc":"Modern physiology reveals that water hydration is not just about volume—it depends on the sodium-potassium ATPase pump and trace minerals (magnesium, potassium) maintaining intracellular versus extracellular fluid osmotic balance.","relevanceDailyUse":"Start the day with 1-2 cups of warm water. Sip room-temperature water between meals rather than gulping huge amounts while eating.","safetyNote":"Individuals with severe heart failure or kidney disease must follow individualized fluid limits."},{"id":"sleep-recovery","icon":"😴","badgeColor":"bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30","name":"Sleep & Circadian Recovery","tagline":"Glymphatic Brain Cleansing & Cellular DNA Repair","shortDesc":"Consistent timing and a calm routine supporting restorative sleep architecture.","overview":"Sleep is nature's supreme neurobiological medicine. During deep slow-wave sleep, the brain activates the glymphatic system—a specialized metabolic waste clearance mechanism that flushes out neurotoxic proteins including beta-amyloid.","traditionsTitle":"Nidra in Classical Traditions","traditionsDesc":"Ayurveda reveres Nidra as one of the Three Pillars of Life (Trayopasthambha: Ahara, Nidra, Brahmacharya). Traditional protocols emphasize sleeping before 10 PM to utilize Pitta time for cellular digestion.","innovationsTitle":"Chronobiology & Sleep Architecture","innovationsDesc":"The 2017 Nobel Prize in Medicine unraveled the molecular feedback loops of circadian clock genes. Clinical polysomnography proves deep and REM sleep stages are crucial for memory consolidation and emotional regulation.","relevanceDailyUse":"Dim screens 1-2 hours before bed. Keep the bedroom cool and dark. Maintain a consistent bedtime every night.","safetyNote":"Persistent insomnia or chronic daytime sleepiness warrants professional medical assessment."},{"id":"exercise-movement","icon":"🏃","badgeColor":"bg-orange-500/15 text-orange-700 dark:text-orange-300 border-orange-500/30","name":"Exercise & Functional Movement","tagline":"Metabolic Longevity, Bone Density & Myokine Signaling","shortDesc":"Regular, suitable movement supporting physical stamina, heart health, and mental wellbeing.","overview":"Human biology is built for regular physical exertion. Skeletal muscle is now recognized as an endocrine organ: contracting muscle fibers release specialized signaling peptides called myokines that reduce systemic inflammation and support brain neurogenesis.","traditionsTitle":"Vyayama & Classical Conditioning","traditionsDesc":"Ayurveda describes Vyayama (exercise) with a critical nuance: it advises exercising up to half of one's capacity (Ardha Shakti—until light perspiration forms on the forehead and nose) to strengthen without depleting vital Ojas.","innovationsTitle":"Exercise Physiology & Longevity Research","innovationsDesc":"Zone 2 cardio builds mitochondrial volume and metabolic flexibility. Studies confirm cardiorespiratory fitness (measured by VO2 max) is the single strongest predictor of all-cause mortality risk reduction.","relevanceDailyUse":"Combine 30 minutes of daily Zone 2 walking/jogging with 2-3 sessions of weekly resistance training. Never stay seated for more than 60 minutes continuously.","safetyNote":"Build intensity gradually. Seek professional evaluation for chest discomfort or joint pain."},{"id":"naturopathy","icon":"🌱","badgeColor":"bg-lime-500/15 text-lime-700 dark:text-lime-300 border-lime-500/30","name":"Naturopathy","tagline":"The Healing Power of Nature (Vis Medicatrix Naturae)","shortDesc":"A broad approach focused on lifestyle medicine, gentle detoxification, and non-drug therapies.","overview":"Naturopathy is founded on the biological reality that the human body possesses an innate, self-regulating healing force. When artificial toxic burdens (processed foods, pollution, chronic stress) are removed, physiology naturally returns to equilibrium.","traditionsTitle":"Nature Cure Foundations","traditionsDesc":"Rooted in ancient Greek medicine and popularized by Father Sebastian Kneipp and Mahatma Gandhi, nature cure leverages the Panchamahabhutas (earth, water, fire/sun, air, ether) through fasting, mud packs, and sunshine.","innovationsTitle":"Autophagy & Lifestyle Oncology","innovationsDesc":"Yoshinori Ohsumi's 2016 Nobel Prize on autophagy proved the cellular cleansing mechanism of fasting. Intermittent fasting clears damaged intracellular organelles and optimizes metabolic biomarkers.","relevanceDailyUse":"Practice intermittent overnight fasting (12-14 hours between dinner and breakfast), take fresh air walks, and use warm mud/clay compresses for local aches.","safetyNote":"Training and evidence vary. It should complement, never replace, qualified emergency medical care."},{"id":"aromatherapy","icon":"🌸","badgeColor":"bg-pink-500/15 text-pink-700 dark:text-pink-300 border-pink-500/30","name":"Aromatherapy & Olfactory Medicine","tagline":"Volatile Terpenes, Limbic System Stimulation & Emotional Calming","shortDesc":"Therapeutic scents part of relaxation rituals, nervous system calming, and mental clarity.","overview":"The olfactory nerve is the only direct, unmyelinated pathway connecting sensory input directly into the limbic system (the amygdala and hippocampus), bypassing the analytical neocortex. Inhaled volatile plant aromatic compounds trigger immediate neurochemical alterations.","traditionsTitle":"Ancient Gandha Chikitsa","traditionsDesc":"From ancient Egyptian temple kyphi to Ayurvedic Gandha Chikitsa and Persian rosewater distillations, essential oils of sandalwood, frankincense, jasmine, and vetiver were used to purify air and elevate spiritual consciousness.","innovationsTitle":"Neuropharmacology of Terpenes","innovationsDesc":"Gas chromatography-mass spectrometry (GC-MS) isolates bioactive compounds such as linalool and beta-caryophyllene. Studies demonstrate linalool binds GABA-A receptors similarly to anxiolytics without cognitive impairment.","relevanceDailyUse":"Diffuse 3-4 drops of pure lavender before bed. Keep peppermint oil at your desk for afternoon alertness.","safetyNote":"Never ingest pure essential oils. Always dilute in carrier oil before skin application."},{"id":"massage","icon":"💆","badgeColor":"bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30","name":"Massage & Abhyanga Bodywork","tagline":"Lymphatic Drainage, Fascial Unwinding & Nervous System Pacification","shortDesc":"Touch and soft-tissue manual therapy offering short-term relaxation, comfort, and circulation.","overview":"Therapeutic touch is a biological imperative. Systematic manual pressure on soft tissue lowers circulating serum cortisol, triggers central oxytocin synthesis, mobilizes interstitial lymphatic fluid, and releases localized fascial cross-linking.","traditionsTitle":"Ayurvedic Abhyanga & Marma Therapy","traditionsDesc":"Classical Abhyanga uses warm, herbally-infused oils selected for the constitution. The Ashtanga Hridaya advises daily self-massage to ward off aging, fatigue, and Vata disorders.","innovationsTitle":"Mechanobiology of Fascia & Lymphatics","innovationsDesc":"Recent anatomical imaging confirms that the interstitium—a fluid-filled network within connective tissues—facilitates whole-body cellular communication. Manual bodywork mechanically drains inflammatory cytokines via lymphatic flow.","relevanceDailyUse":"Perform a 10-minute warm sesame oil self-massage before a morning shower once or twice a week. Massage your feet before bed.","safetyNote":"Avoid massaging over open wounds, acute fractures, blood clots, or during high fever."},{"id":"acupressure","icon":"👐","badgeColor":"bg-teal-500/15 text-teal-700 dark:text-teal-300 border-teal-500/30","name":"Acupressure & Meridian Points","tagline":"Targeted Neuro-Reflex Stimulation & Endorphin Release","shortDesc":"Manual pressure on key bio-energetic points relieving tension, headache, and nausea.","overview":"Acupressure applies localized manual mechanical pressure to specific somatic trigger points. This stimulation triggers local nitric oxide release, reduces muscular hypertonicity, and sends afferent signals to the spinal cord and brainstem that gate pain perception.","traditionsTitle":"Eastern Meridian Traditions","traditionsDesc":"Originating from Chinese meridian systems and Ayurvedic Marma vidya, practitioners target points along energy pathways (Jing-Luo) to relieve energy stagnation and tonify organ Qi.","innovationsTitle":"Neuro-Reflex & Pain Gate Science","innovationsDesc":"Studies validate that applying pressure to PC6 and LI4 triggers endogenous opioid (endorphin and enkephalin) release in the central nervous system, blocking incoming pain signals according to the Melzack-Wall Gate Control Theory.","relevanceDailyUse":"For headaches or tension, press firmly on the webbing between your thumb and index finger (LI4) in circular motions for 1-2 minutes.","safetyNote":"Never apply heavy pressure over inflamed skin or bruises. Certain points are contraindicated in pregnancy."},{"id":"traditional-chinese-medicine","icon":"☯️","badgeColor":"bg-red-500/15 text-red-700 dark:text-red-300 border-red-500/30","name":"Traditional Chinese Medicine (TCM)","tagline":"Yin-Yang Polarity, Qi Dynamics & Five-Phase Ecological Harmony","shortDesc":"Ancient frameworks of acupuncture, herbal synergy, and energetic balance.","overview":"TCM views the human body as an ecological microcosm governed by the dual complementary forces of Yin (cooling, nourishing, receptive) and Yang (warming, active, metabolizing). Disease arises from stagnant or deficient Qi (vital energy) flowing through meridian pathways.","traditionsTitle":"Classical Foundations","traditionsDesc":"Recorded in the Huangdi Neijing (Yellow Emperor's Inner Classic) over 2,000 years ago, TCM diagnostics utilize radial pulse diagnosis, tongue examination, acupuncture, moxibustion, cupping, and complex polyherbal formulas.","innovationsTitle":"Nobel Recognition & Bio-Acupuncture","innovationsDesc":"In 2015, Dr. Tu Youyou was awarded the Nobel Prize in Medicine for discovering artemisinin from sweet wormwood (Qinghao) based on ancient TCM texts. Modern electro-acupuncture is documented to stimulate vagal-adrenal anti-inflammatory pathways.","relevanceDailyUse":"Drink warm teas, consume seasonal cooked foods, protect your lower back and neck from cold wind, and practice gentle Qigong.","safetyNote":"Seek appropriately credentialed, licensed practitioners. Polyherbal formulations can interact with pharmaceuticals."},{"id":"hydrotherapy","icon":"🛀","badgeColor":"bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30","name":"Hydrotherapy & Thermal Medicine","tagline":"Vascular Gymnastics, Heat Shock Proteins & Cold Exposure Resilience","shortDesc":"Warm, cool, or contrast water applications optimizing circulation and immune vigilance.","overview":"Water conducts thermal energy 24 times faster than air. Exploiting water's temperature gradients exerts profound mechanical and vascular effects: heat dilates vessels and loosens connective tissue, while cold elicits vasoconstriction, shunts blood to core organs, and spurs norepinephrine synthesis.","traditionsTitle":"Thermal Traditions Across History","traditionsDesc":"From Roman Thermae and Nordic saunas to Japanese Onsen, Turkish Hamams, and Ayurvedic Avagaha Sweda, thermal water immersion has been a cornerstone of detoxification and convalescence for millenia.","innovationsTitle":"Heat Shock Proteins & Cryotherapy Biology","innovationsDesc":"Scientific investigation demonstrates thermal stress triggers heat shock proteins (HSP70) that refold misfolded cellular proteins. Deliberate cold immersion increases circulating norepinephrine by up to 530% and activates brown adipose tissue (BAT).","relevanceDailyUse":"Finish your morning shower with 30-60 seconds of cool water for sustained alertness. Enjoy a warm epsom salt soak before bed to promote deep sleep.","safetyNote":"Avoid extreme temperatures if you have uncontrolled hypertension, cardiovascular disease, or neuropathy."},{"id":"lifestyle-sunlight","icon":"🌞","badgeColor":"bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30","name":"Lifestyle & Chronobiology","tagline":"Circadian Alignment with Solar Rhythms & Nature's Seasons","shortDesc":"Daily biological flow, morning sunlight, grounding, and connection supporting holistic wellness.","overview":"Human gene expression, hormonal pulses, and digestive enzymes operate on a 24-hour circadian clock entrained by the solar cycle. When our light exposure, meal timing, and sleep patterns become asynchronous with the sun, chronic metabolic and mental health issues emerge.","traditionsTitle":"Ayurvedic Dinacharya & Ritucharya","traditionsDesc":"Ayurveda structured human life around Dinacharya (daily routine synchronized with nature's biological transitions) and Ritucharya (seasonal protocol shifts across the 6 Indian seasons).","innovationsTitle":"Photobiology & Circadian Clock Genes","innovationsDesc":"The discovery of intrinsically photosensitive retinal ganglion cells (ipRGCs) containing melanopsin proved that morning photon exposure directly sets the suprachiasmatic nucleus (SCN)—the brain's master biological clock.","relevanceDailyUse":"Step outside for 10-15 minutes of natural sunlight within 60 minutes of waking. Avoid bright overhead lighting after 9 PM.","safetyNote":"Protect skin from harsh ultraviolet midday rays. Adapt for seasonal extremes."}];
+
+    let activeCategory = 'All';
+    let searchQuery = '';
+    let favorites = JSON.parse(localStorage.getItem('sattva_favs') || '[]');
+
+    function saveFavorites() {
+      localStorage.setItem('sattva_favs', JSON.stringify(favorites));
+    }
+
+    function toggleFavorite(slug, event) {
+      if (event) event.stopPropagation();
+      const index = favorites.indexOf(slug);
+      if (index === -1) {
+        favorites.push(slug);
+      } else {
+        favorites.splice(index, 1);
+      }
+      saveFavorites();
+      renderConditions();
+      const modalFavBtn = document.getElementById('modalFavToggle');
+      if (modalFavBtn) {
+        modalFavBtn.innerHTML = favorites.includes(slug) ? '❤️ Saved' : '🤍 Save to Favorites';
+      }
+    }
+
+    function toggleServerBanner() {
+      const banner = document.getElementById('serverBanner');
+      banner.classList.toggle('visible');
+    }
+
+    function connectLiveServer() {
+      const url = document.getElementById('serverUrlInput').value.trim();
+      if (url) {
+        window.location.href = url;
+      }
+    }
+
+    function renderModalities() {
+      const container = document.getElementById('modalitiesList');
+      container.innerHTML = modalities.map(m => `
+        <div class="modality-chip" onclick="openModalityModal('${m.id}')">
+          <span class="modality-chip-icon">${m.icon}</span>
+          <span class="modality-chip-name">${m.name}</span>
+        </div>
+      `).join('');
+    }
+
+    function openModalityModal(id) {
+      const mod = modalities.find(m => m.id === id);
+      if (!mod) return;
+
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="modal-header">
+          <div>
+            <div style="font-size: 28px;">${mod.icon}</div>
+            <div class="modal-title" style="margin-top: 6px;">${mod.name}</div>
+            <div style="font-size: 12px; color: var(--primary); font-weight: 600;">${mod.tagline}</div>
+          </div>
+          <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        </div>
+
+        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px;">
+          ${mod.overview}
+        </div>
+
+        <div class="item-card">
+          <div class="item-header">📜 ${mod.traditionsTitle}</div>
+          <div class="item-body">${mod.traditionsDesc}</div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-header">💡 ${mod.innovationsTitle}</div>
+          <div class="item-body">${mod.innovationsDesc}</div>
+        </div>
+
+        <div class="item-card">
+          <div class="item-header">🌿 Daily Wellness Practice</div>
+          <div class="item-body">${mod.relevanceDailyUse}</div>
+        </div>
+
+        <div class="disclaimer-card">
+          ⚠️ <strong>Safety Note:</strong> ${mod.safetyNote}
+        </div>
+      `;
+
+      document.getElementById('modalBackdrop').classList.add('open');
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(cat) || (cat === 'Favorites' && btn.textContent.includes('Saved')));
+      });
+      renderConditions();
+    }
+
+    function filterConditions() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+      renderConditions();
+    }
+
+    function renderConditions() {
+      const grid = document.getElementById('conditionsGrid');
+      let filtered = conditionsData.filter(c => {
+        const matchesCategory =
+          activeCategory === 'All' ? true :
+          activeCategory === 'Favorites' ? favorites.includes(c.slug) :
+          c.category === activeCategory;
+
+        const matchesSearch =
+          !searchQuery ||
+          c.name.toLowerCase().includes(searchQuery) ||
+          c.summary.toLowerCase().includes(searchQuery) ||
+          c.herbs.some(h => h.name.toLowerCase().includes(searchQuery)) ||
+          c.practices.some(p => p.toLowerCase().includes(searchQuery));
+
+        return matchesCategory && matchesSearch;
+      });
+
+      document.getElementById('conditionCount').textContent = `${filtered.length} Conditions`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🌿</div>
+            <div style="font-weight: 600;">No matching conditions found</div>
+            <div style="font-size: 12px; margin-top: 4px;">Try searching for a different herb, symptom, or choose another category.</div>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => {
+        const isFav = favorites.includes(c.slug);
+        const herbPills = (c.herbs || []).slice(0, 3).map(h => `<span class="herb-pill">🌿 ${h.name}</span>`).join('');
+
+        return `
+          <div class="condition-card" onclick="openConditionModal('${c.slug}')">
+            <div class="card-top">
+              <div class="card-title-group">
+                <div class="card-icon">${c.icon || '🌿'}</div>
+                <div>
+                  <div class="card-cat">${c.category}</div>
+                  <div class="card-title">${c.name}</div>
+                </div>
+              </div>
+              <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${c.slug}', event)">
+                ${isFav ? '❤️' : '🤍'}
+              </button>
+            </div>
+            <div class="card-desc">${c.summary}</div>
+            ${herbPills ? `<div class="herbs-tags">${herbPills}</div>` : ''}
+            <div class="card-footer">
+              <span class="card-evidence">Evidence: ${c.evidence}</span>
+              <span class="card-action">View Care Guide →</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openConditionModal(slug) {
+      const c = conditionsData.find(item => item.slug === slug);
+      if (!c) return;
+
+      const isFav = favorites.includes(c.slug);
+      const content = document.getElementById('modalContent');
+
+      content.innerHTML = `
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <div class="modal-icon">${c.icon || '🌿'}</div>
+            <div>
+              <div class="modal-category-tag">${c.category} Wellness</div>
+              <div class="modal-title">${c.name}</div>
+            </div>
+          </div>
+          <button class="modal-close-btn" onclick="closeModal()">✕</button>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+          <button id="modalFavToggle" class="cat-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${c.slug}')" style="font-size: 12px; padding: 6px 12px;">
+            ${isFav ? '❤️ Saved' : '🤍 Save to Favorites'}
+          </button>
+        </div>
+
+        <!-- Dosha Perspective -->
+        <div class="item-card" style="background: var(--primary-bg); border-color: rgba(27, 77, 62, 0.15);">
+          <div class="item-header" style="color: var(--primary);">🪷 Ayurvedic & Dosha Perspective</div>
+          <div class="item-body" style="color: #1e3a2f;">${c.perspective}</div>
+        </div>
+
+        <!-- Action Items (Try Today) -->
+        ${c.tryToday && c.tryToday.length ? `
+          <div class="item-card" style="background: #fffbeb; border-color: #fde68a;">
+            <div class="item-header" style="color: #92400e;">⚡ Actionable Steps to Try Today</div>
+            <ul style="padding-left: 18px; font-size: 12px; color: #78350f; line-height: 1.6;">
+              ${c.tryToday.map(tip => `<li>${tip}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Tabs -->
+        <div class="modal-tabs">
+          <button class="modal-tab-btn active" onclick="switchModalTab('herbs', event)">🌿 Herbs</button>
+          <button class="modal-tab-btn" onclick="switchModalTab('diet', event)">🍲 Diet</button>
+          <button class="modal-tab-btn" onclick="switchModalTab('lifestyle', event)">🧘 Lifestyle</button>
+          <button class="modal-tab-btn" onclick="switchModalTab('safety', event)">⚠️ Safety</button>
+        </div>
+
+        <!-- Tab 1: Herbs -->
+        <div class="modal-tab-content active" id="tab-herbs">
+          ${(c.herbs || []).map(h => `
+            <div class="item-card">
+              <div class="item-header">🌱 ${h.name}</div>
+              <div class="item-body">${h.use}</div>
+              <div class="item-prep"><strong>How to prepare:</strong> ${h.preparation}</div>
+              <div class="item-safety"><strong>Caution:</strong> ${h.safety}</div>
+            </div>
+          `).join('')}
+          ${(c.herbalRemedyTips || []).length ? `
+            <div class="item-card">
+              <div class="item-header">🍵 Traditional Preparation Tips</div>
+              <ul style="padding-left: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                ${c.herbalRemedyTips.map(tip => `<li>${tip}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Tab 2: Diet -->
+        <div class="modal-tab-content" id="tab-diet">
+          <div class="item-card">
+            <div class="item-header" style="color: #166534;">✅ Nourishing Foods to Favor (Ahara)</div>
+            <ul style="padding-left: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+              ${(c.foods || []).map(f => `<li>${f}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="item-card">
+            <div class="item-header" style="color: #991b1b;">❌ Foods to Moderate or Limit</div>
+            <ul style="padding-left: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+              ${(c.limit || []).map(l => `<li>${l}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tab 3: Lifestyle & Practices -->
+        <div class="modal-tab-content" id="tab-lifestyle">
+          <div class="item-card">
+            <div class="item-header">🧘 Daily Practices & Yoga (Dinacharya)</div>
+            <ul style="padding-left: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+              ${(c.practices || []).map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+          ${c.therapies && c.therapies.length ? `
+            <div class="item-card">
+              <div class="item-header">🪷 Complementary Therapies</div>
+              <ul style="padding-left: 18px; font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                ${c.therapies.map(t => `<li>${t}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Tab 4: Safety & Warnings -->
+        <div class="modal-tab-content" id="tab-safety">
+          <div class="item-card" style="border-left: 4px solid #f59e0b;">
+            <div class="item-header">📋 Usage Safety Note</div>
+            <div class="item-body">${c.safety}</div>
+          </div>
+          ${c.warnings && c.warnings.length ? `
+            <div class="item-card" style="border-left: 4px solid #ef4444; background: #fff1f2;">
+              <div class="item-header" style="color: #991b1b;">🚨 Seek Immediate Medical Care If:</div>
+              <ul style="padding-left: 18px; font-size: 12px; color: #991b1b; line-height: 1.6;">
+                ${c.warnings.map(w => `<li>${w}</li>`).join('')}
+              </ul>
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="disclaimer-card">
+          ⚠️ <strong>Medical Disclaimer:</strong> Natural and Ayurvedic suggestions are meant for lifestyle education and complementary support only. Never stop prescribed medications or substitute home remedies for professional clinical diagnosis.
+        </div>
+      `;
+
+      document.getElementById('modalBackdrop').classList.add('open');
+    }
+
+    function switchModalTab(tabName, event) {
+      document.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.modal-tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      const target = document.getElementById('tab-' + tabName);
+      if (target) target.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalBackdrop').classList.remove('open');
+    }
+
+    function closeModalOnBackdrop(event) {
+      if (event.target === document.getElementById('modalBackdrop')) {
+        closeModal();
+      }
+    }
+
+    // Initialize
+    renderModalities();
+    renderConditions();
+  </script>
+</body>
+</html>
